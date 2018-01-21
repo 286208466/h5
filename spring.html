@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<title></title>
+<style>
+#bgAudioBtn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 32px;
+    height: 32px;
+    z-index: 10000;
+}
+#bgAudioBtn i {
+	position: absolute;
+	width: 32px;
+    height: 32px;
+}
+#bgAudioBtn i:after {
+	content: "";
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADQAAAA0CAMAAADypuvZAAABhlBMVEVHcEwAAAAAAAD5+fkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASEhJ9fX1zc3NLS0sGBgYYGBi/v79fX1+Wlpb29vaMjIz9/f3o6Oj19fVWVlbQ0NAjIyP4+Pj7+/vHx8fU1NTs7Ozg4OD8/Pz6+vr19fU7Ozs2NjbJycng4ODd3d3m5ualpaWFhYU/Pz/4+Ph3d3eIiIjl5eX////CwsLW1tb6+vro6Ojs7Oz8/PzLy8vj4+Pk5OTj4+Pq6ur7+/tZWVlcXFzy8vLh4eH6+vrq6uooKCjw8PBiYmLw8PDT09Py8vK8vLzz8/Ojo6P19fXAwMD5+fkMDAzl5eXh4eHT09P29vb5+fn5+fmxsbGSkpL9/f1lZWVpaWm0tLSNjY3a2tp7e3v///+cnJyVlZX29vb7+/u4uLj39/ezs7Ps7Ozz8/Pz8/PMzMz19fXu7u6/v7/y8vIeHh729vbw8PDo6Ojh4eHX19fn5+fS0tLq6urj4+P///+k1oEZAAAAgXRSTlMAIw3lCR8YJiQHCiAlAhEeFylBPjMnKWk4TNZH/KfONX0r3vFyg7KW9uvRLy9zlZKmVUUw20BFo/1theiptfJ2oKGdrew2N8iZ6bIsvTnBgsVnylTPauEoopuA1OPkXEv7OjpgSIxA/FBL2e5i2l60zct507toxirawqyah6Z/r5yOY4ppAAACNklEQVRIx6WWVXfbQBCFV47tKzm2ZBliCDNz0jZlbsrMzMwp4/zzPli2tLMr2UedJ2lH39nV3SEhVLPstGOYgGk4adsSHVgyb0AyI59sgyRS0FgqEbWLFgGAVNhuuTQiLJ3TMVY3Iq1bI0nGRBszM4oCWbS1LNMj0wEDZKW9LBMdmRn4r5xWg52HJ3sUNXwN9VqPEA30Ksq37tRfO33Rf+4ior4Dg4xq3nIgDgZnzksQ0egYiw1P7eBa9dJlGSLa7UpUgm8EoDQwzyBaUrdKskPPnhtiEFWUv8pzgebOnPWgry8b0MjVoD8vhDAUrYdPPW5ABayPXyEieihlpRCW5obciQUPAnpuTBFdk9yWsHX36n7/W8ZPKgAAHt2muuS1Q6KhvPSrjN/rjZfirXuuHBVOSGz++ON/eHfqQdDlaHTwbHFttfVcuS8rEZ4U36ZnQxJERGTP2/dzekcUhA+fS3oo/HiTLubflbTH0whxsrLQf31stWvrCz59rKp+QyP50HQjkZ5SAXg1U1Q+cJTLdU+0gpsKAN7Ui2rK8zA6SDKE5dcr7BObB+y2HRzCs/pzsIBlSiwGGPIOVntRY6nBknBPgNnbLHsra8ssCeV07w9A21urT27eYUVMKiwbPrPriL9cvDAs1zCphJWPNZnjNX2gJIRaw0oTRETUd6ga0kjVsgwAveP7N/cdDYvIZHQD0LfeNq1G23hz/9fU4rXPeI063kgQb/iIN+bEG6hijm4xh8TOxtF/LhWjzcPoIy0AAAAASUVORK5CYII=) no-repeat;
+    background-size: cover;
+}
+#bgAudioBtn.on i {
+	-webkit-animation: bgm 1s linear 0s infinite;
+    animation: bgm 1s linear 0s infinite;
+}
+#bgAudioBtn.on i:after {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADQAAAA0CAMAAADypuvZAAABDlBMVEUAAAAAAAAAAACampoAAAAAAAAAAABHcEz29vYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD7+/sYGBgeHh7////o6Ojo6OjGxsb6+vp1dXXe3t78/PylpaXq6uoGBgbu7u5LS0vm5ub19fX7+/vh4eHu7u7Kysrq6urT09Pm5uZ3d3cMDAxZWVl/f3+dnZ39/f3T09PJycnb29uPj4/s7Oz29vbz8/Nubm7b29uMjIy1tbXb29s/Pz/7+/v5+fm8vLygoKDo6Oj6+vpzc3OQkJCDg4O7u7v9/f0tLS34+Pj////8/PwSEhLj4+Pl5eXe3t7CwsKzs7P9/f37+/ucnJz9/f1WVlYxMTH////bZPQRAAAAWXRSTlMmByNPGAkfANckDQIKJSARHhfvKSr8qaxw5j+V8VWsJ70zpNDsmbt1rYClQCg2QlH2gXOOSbXVzjyPR2GQMPDjaFGr6T5KRGb8Ld/99imfo5RtX/rrUPg1LreKM90AAAGtSURBVEjHpdbXdoMwDABQmWJSRgI0O+nee++9997+/x9pmqQJ2DLmuHrIg8k9gJAtQUYM4puBYQPYRmD6BPkD8As0NCAWRkgVyLEACctJQBQlTUYlyDUhIUwXQyQHiZEjIvJsUITt8cjJgjKyThx5KUxDeVFEbEgVNukiF83BzPhEQciG20F4rjcZG1sXMv+HKP4svYyx4ugCt0rbyJIjxvqnuNpoIQeSEGPT+diy00SWArEyfyuQvVEEsQr3VpAJ5eizjY4eouthAxly9PH1+nT4q65iuzIDBOSop/F7UL9m7DR2gYCvQAAnZ+w2dsEHU4mgVr27iVUFBGoEF/eX0QsBGCkQHJ/HMgF2GsRtkITNI0Wgh7QeD0lEfm//8fnlW4oMJOWr1WbBvb/JUCB83KFyp7hlyBTKqM6UyOcLdrGoRoTfGjsRw3bxPAibcCNilgsoCoXtXoqgQfzpqHCwVLqmbxvvb+IRNr/VMQP4jRzksBwZbpnJGshuhB3LS2ul2ZU5WUXS5AaAV4Oi1aCN1/1fU9Nrn3qNWm8k0Bs+9MYcvYFKc3TTHBLTjaM/Ed1Zn+wBdNwAAAAASUVORK5CYII=) no-repeat;
+    background-size: cover;
+}
+@-webkit-keyframes bgm {
+    0% {
+        -webkit-transform: rotate(0deg)
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg)
+    }
+}
+/*
+	加载
+*/
+#loadingWrap {
+	width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    text-align: center;
+    background-color: #ffbe00;
+    z-index: 100000;
+}
+#loadingWrap img {
+	width: 12%;
+    top: 40%;
+    left: 45%;
+    margin: auto;
+    position: absolute;
+}
+#loadingWrap span {
+	display: block;
+    color: #fff;
+    width: 100%;
+    top: 58%;
+    left: 0;
+    margin: auto;
+    position: absolute;
+    font-size: 18px;
+}
+</style>
+</head>
+<body class="spring-body">
+
+	<div id="loadingWrap">
+		<img src="./src/img/loading.gif">
+		<span>0%</span>
+	</div>
+
+	<audio preload="" id="bgm" class="bgm" loop="loop" autoplay>
+        <source src="./src/file/bgm.mp3" type="audio/mpeg">
+    </audio>
+	<a id="bgAudioBtn" class="on">
+		<i></i>
+	</a>
+	
+	<div class="scene section1 cur">
+		<canvas id="snowCanvas" width="375" height="667"></canvas>
+		<div id="ticketBtn">
+			<div class="circles">
+				<div>
+				</div>
+			</div>
+			<a class="btn">抢</a>
+		</div>
+	</div>
+	
+	<div class="scene section2">
+		
+	</div>
+	
+	<div class="scene section3">
+	
+	</div>
+	
+<script type="text/javascript" src="./src/js/jquery.js"></script>	
+<script type="text/javascript" src="./src/js/createjs-2015.11.26.min.js"></script>
+<script type="text/javascript" src="./dist/spring.js"></script>
+<script>
+
+var preLoadRes = function(){
+	var loader = new createjs.LoadQueue();
+	loader.installPlugin(createjs.Sound);
+	loader.on("fileload", handleFileComplete);
+	loader.on("progress", handleProgress);
+	loader.on("complete", handleAllComplete);
+	loader.loadFile({id: "bgm", src: "./src/file/bgm.mp3"});
+	var manifest = [
+		{id: "section1", src: "./src/img/section1.jpg"}
+		,{id: "section2", src: "./src/img/section2.jpg"}
+		,{id: "section3", src: "./src/img/section3.jpg"}
+		,{id: "section4", src: "./src/img/section4.jpg"}
+		,{id: "section5", src: "./src/img/section5.jpg"}
+		
+	];
+	loader.loadManifest(manifest);
+	
+}
+var handleFileComplete = function(evt){
+	
+}
+
+var handleAllComplete = function(){
+	//createjs.Sound.play("bgm");
+	app.initScene1();
+}
+
+var handleProgress = function(evt){
+	$("#loadingWrap span").text(Math.floor(evt.loaded*100) + "%");
+}
+
+preLoadRes();
+
+</script>
+</body>
+</html>
