@@ -16,16 +16,23 @@ $("#ticketBtn a").on("touchstart", function(){
 	//$(".scene2").addClass("cur");
 	
 	//出票
-	var stage = new createjs.Stage(document.getElementById("scene1canvas"));
+	//getTicket();
+	
+});
+
+//出票
+getTicket = function(){
+	var canvas = document.getElementById("scene1canvas");
+	var stage = new createjs.Stage(canvas);
 
 	var spriteSheet = new createjs.SpriteSheet({
 		//帧率
-		framerate: 30,
+		framerate: 9,
 		//图片地址
-		"images": ["./src/img/spring/tickets.png"],
-		"frames": {"regX": 0, "height": 185, "count": 12, "regY": 0, "width": 303},
+		"images": [loader.getResult("tickets")],
+		"frames": {"regX": 129, "height": 166, "count": 12, "regY": 0, "width": 258},
 		"animations": {
-			"run": [0, 11, 1.5],
+			"run": [0, 11],
 		}
 	});
 
@@ -33,18 +40,17 @@ $("#ticketBtn a").on("touchstart", function(){
 		console.log("Complete", event);
 	});
 	spriteSheet.on("error", function(event) {
-		console.log("Error", event);
+		
 	});
 
 	var grant = new createjs.Sprite(spriteSheet, "run");
-	grant.x = 0;
-	grant.y = 22;
+	grant.x = stage.canvas.width / 2;
+	grant.y = 160;
 
 	stage.addChild(grant);
-	createjs.Ticker.timingMode = createjs.Ticker.RAF;
+	createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCHED;
 	createjs.Ticker.addEventListener("tick", stage);
-	
-});
+}
 
 var initSnowCanvas = function(id){
 	function rnd(n, m){

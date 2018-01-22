@@ -117,18 +117,17 @@
 	
 <script type="text/javascript" src="./src/js/jquery.js"></script>	
 <script type="text/javascript" src="./src/js/createjs-2015.11.26.min.js"></script>
-<script type="text/javascript" src="./dist/spring.js"></script>
 <script>
-
+var loader;
 var preLoadRes = function(){
-	var loader = new createjs.LoadQueue();
+	loader = new createjs.LoadQueue();
 	loader.installPlugin(createjs.Sound);
 	loader.on("fileload", handleFileComplete);
 	loader.on("progress", handleProgress);
 	loader.on("complete", handleAllComplete);
 	loader.loadFile({id: "bgm", src: "./src/file/bgm.mp3"});
 	var manifest = [
-		{id: "section1", src: "./src/img/spring/scene1.jpg"}
+		{id: "scene1", src: "./src/img/spring/scene1.jpg"}
 		,{id: "scene1Ticket", src: "./src/img/spring/scene1Ticket.png"}
 		,{id: "tickets", src: "./src/img/spring/tickets.png"}
 		,{id: "section2", src: "./src/img/spring/scene2.jpg"}
@@ -158,5 +157,6 @@ var handleProgress = function(evt){
 preLoadRes();
 
 </script>
+<script type="text/javascript" src="./dist/spring.js"></script>
 </body>
 </html>
