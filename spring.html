@@ -82,7 +82,7 @@
 <body class="spring-body">
 
 	<div id="loadingWrap">
-		<img src="./src/img/loading.gif">
+		<img src="./src/img/spring/loading.gif">
 		<span>0%</span>
 	</div>
 
@@ -93,18 +93,21 @@
 		<i></i>
 	</a>
 	
-	<div class="scene section1 cur">
-		<canvas id="snowCanvas" width="375" height="667"></canvas>
-		<div id="ticketBtn">
-			<div class="circles">
-				<div>
+	<div class="scene scene1 cur">
+		<canvas id="snowCanvas" width="375.5" height="667"></canvas>
+		<div class="content">
+			<canvas id="scene1canvas" width="258" height="383"></canvas>
+			<div id="ticketBtn">
+				<div class="circles">
+					<div>
+					</div>
 				</div>
+				<a class="btn">抢</a>
 			</div>
-			<a class="btn">抢</a>
 		</div>
 	</div>
 	
-	<div class="scene section2">
+	<div class="scene scene2">
 		
 	</div>
 	
@@ -125,11 +128,13 @@ var preLoadRes = function(){
 	loader.on("complete", handleAllComplete);
 	loader.loadFile({id: "bgm", src: "./src/file/bgm.mp3"});
 	var manifest = [
-		{id: "section1", src: "./src/img/section1.jpg"}
-		,{id: "section2", src: "./src/img/section2.jpg"}
-		,{id: "section3", src: "./src/img/section3.jpg"}
-		,{id: "section4", src: "./src/img/section4.jpg"}
-		,{id: "section5", src: "./src/img/section5.jpg"}
+		{id: "section1", src: "./src/img/spring/scene1.jpg"}
+		,{id: "scene1Ticket", src: "./src/img/spring/scene1Ticket.png"}
+		,{id: "tickets", src: "./src/img/spring/tickets.png"}
+		,{id: "section2", src: "./src/img/spring/scene2.jpg"}
+		,{id: "section3", src: "./src/img/spring/scene3.jpg"}
+		,{id: "section4", src: "./src/img/spring/scene4.jpg"}
+		,{id: "section5", src: "./src/img/spring/scene5.jpg"}
 		
 	];
 	loader.loadManifest(manifest);
@@ -142,6 +147,8 @@ var handleFileComplete = function(evt){
 var handleAllComplete = function(){
 	//createjs.Sound.play("bgm");
 	app.initScene1();
+	//隐藏加载效果
+	$("#loadingWrap").fadeOut(400);
 }
 
 var handleProgress = function(evt){

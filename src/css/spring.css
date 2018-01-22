@@ -18,17 +18,29 @@
 	-webkit-transform: translate(-100%, 0);
 	transform: translate(-100%, 0);
 }
-#snowCanvas {
-	background: url("../../src/img/section1.jpg") no-repeat left bottom 100%;
+/*
+	场景1
+*/
+.scene1 #snowCanvas, .scene1 #scene1canvas {
+	background-repeat: no-repeat;
+	background-position: left bottom;
 	background-size: 100%;
 }
-#ticketBtn {
+.scene1 .content {
 	position: absolute;
 	z-index: 1;
 	top: 50%;
 	left: 50%;
 	-webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
+    text-align: center;
+}
+#scene1canvas {
+	margin-bottom: 30px;
+}
+#ticketBtn {
+    position: relative;
+    display: inline-block;
 }
 #ticketBtn a {
 	width: 58px;
@@ -41,6 +53,7 @@
 	border: 6px solid #5896E5;
 	position: relative;
 	z-index: 1;
+	margin: 0 auto;
 }
 .circles {
 	position:absolute;
@@ -92,7 +105,7 @@
 	100%{transform:scale(1.5);opacity:0;}
 }
 
-.section2 {
-	background: url("../../src/img/section2.jpg") no-repeat left bottom 100%;
+.scene2 {
+	background: url("../../src/img/spring/scene2.jpg") no-repeat left bottom 100%;
 	background-size: 100%;
 }

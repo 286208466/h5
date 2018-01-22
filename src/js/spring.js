@@ -12,8 +12,38 @@ $("#bgAudioBtn").on("touchstart", function(){
 	}
 })
 $("#ticketBtn a").on("touchstart", function(){
-	$(".section1").addClass("isHide").removeClass("cur");
-	$(".section2").addClass("cur");
+	//$(".scene1").addClass("isHide").removeClass("cur");
+	//$(".scene2").addClass("cur");
+	
+	//出票
+	var stage = new createjs.Stage(document.getElementById("scene1canvas"));
+
+	var spriteSheet = new createjs.SpriteSheet({
+		//帧率
+		framerate: 30,
+		//图片地址
+		"images": ["./src/img/spring/tickets.png"],
+		"frames": {"regX": 0, "height": 185, "count": 12, "regY": 0, "width": 303},
+		"animations": {
+			"run": [0, 11, 1.5],
+		}
+	});
+
+	spriteSheet.on("complete", function(event) {
+		console.log("Complete", event);
+	});
+	spriteSheet.on("error", function(event) {
+		console.log("Error", event);
+	});
+
+	var grant = new createjs.Sprite(spriteSheet, "run");
+	grant.x = 0;
+	grant.y = 22;
+
+	stage.addChild(grant);
+	createjs.Ticker.timingMode = createjs.Ticker.RAF;
+	createjs.Ticker.addEventListener("tick", stage);
+	
 });
 
 var initSnowCanvas = function(id){
@@ -95,8 +125,14 @@ window.app = window.app || {};
 
 //初始化场景1
 app.initScene1 = function(){
+	//下雪动画
 	initSnowCanvas("snowCanvas");
-	$("#loadingWrap").fadeOut(400);
+	//设置下雪的背景图片
+	$("#snowCanvas").css("background-image", "url(./src/img/spring/scene1.jpg)");
+	
+	//出票机器背景
+	$("#scene1canvas").css("background-image", "url(./src/img/spring/scene1Ticket.png)");
+	
 }
 
 
