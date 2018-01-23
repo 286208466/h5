@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<link rel="stylesheet" type="text/css" href="../src/css/common.css"/>
+<title>AlphaMaskFilter class</title>
+
+<style>
+
+</style>
+</head>
+<body class="">
+
+	<canvas id="canvas" width="375" height="667"></canvas>
+	
+	
+<script type="text/javascript" src="../src/js/jquery.js"></script>	
+<script type="text/javascript" src="../src/js/createjs-2015.11.26.min.js"></script>
+<script>
+var canvas,stage,img;
+
+function init(){
+	canvas = document.getElementById("canvas");
+	stage = new createjs.Stage(canvas);
+	img = new Image();
+	img.onload = handleimg;
+	img.src = "../src/img/spring/loading.gif";
+}
+
+function handleimg(){
+	var box = new createjs.Shape();
+	box.graphics.beginLinearGradientFill(["#000000", "rgba(0, 0, 0, 0)"], [0, 1], 0, 0, 0, 200)
+    box.graphics.drawRect(0, 0, 200, 200);
+    box.cache(0, 0, 200, 200);
+    
+    var bmp = new createjs.Bitmap(img);
+    bmp.filters = [
+		new createjs.AlphaMaskFilter(box.cacheCanvas)
+	];
+	bmp.cache(0, 0, 200, 200);
+	
+	stage.addChild(bmp);
+	
+	stage.update();
+	
+}
+
+init();
+</script>
+</body>
+</html>

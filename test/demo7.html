@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<link rel="stylesheet" type="text/css" href="../src/css/common.css"/>
+<title>Using cache in complex shapes and animations</title>
+
+<style>
+
+</style>
+</head>
+<body class="">
+
+	<canvas id="canvas" width="375" height="667"></canvas>
+	
+	
+<script type="text/javascript" src="../src/js/jquery.js"></script>	
+<script type="text/javascript" src="../src/js/createjs-2015.11.26.min.js"></script>
+<script>
+var canvas;
+var stage;
+var shape;
+var circleRadius = 30;
+var rings = 30;
+
+function init(){
+	canvas = document.getElementById("canvas");
+	stage = new createjs.Stage(canvas);
+	
+	var colors = ["#828b20", "#b0ac31", "#cbc53d", "#fad779", "#f9e4ad",
+	              "#faf2db", "#563512", "#9b4a0b", "#d36600", "#fe8a00", "#f9a71f"];
+	
+	for(var i=0;i<200;i++){
+		shape = new createjs.Shape();
+		for(var j = rings; i > 0; j--){
+			shape.graphics.beginFill(colors[Math.random()*colors.length|0]).drawCircle(0,0,circleRadius*j/rings);
+			
+		}
+		
+		shape.x = Math.random()*canvas.width;
+		shape.y = Math.random()*canvas.height;
+		shape.velX = Math.random()*10-5;
+		shape.velY = Math.random()*10-5;
+		stage.addChild(shape);
+		
+		
+	}
+	
+	fpsLabel = new createjs.Text("-- fps", "bold 18px Arial", "#fff");
+	stage.addChild(fpsLabel);
+	fpsLabel.x = 10;
+	fpsLabel.y = 20;
+	
+	createjs.Ticker.addEventListener("tick", tick);
+	createjs.Ticker.setFPS(50);
+	
+}
+
+init();
+
+function tick(event) {
+	var w = canvas.width;
+	var h = canvas.height;
+	var l = stage.getNumChildren() - 1;
+	for(var i= 1; i< l; i++) {
+		var shape = stage.getChildAt(i);
+		shape.x = (shape.x + shape.velX + w) % w;
+		shape.y = (shape.y + shape.velY + h) % h;
+	}
+	fpsLabel.text = Math.round(createjs.Ticker.getMeasuredFPS()) + " fps";
+	stage.update(event);
+}
+
+function toggleCache(value) {
+	var l = stage.getNumChildren() - 1;
+	for(var i= 0; i< l; i++) {
+		var shape = stage.getChildAt(i);
+		if (value) {
+			shape.cache(-circleRadius, -circleRadius, circleRadius * 2, circleRadius * 2);
+		} else {
+			shape.uncache();
+		}
+	}
+}
+</script>
+</body>
+</html>

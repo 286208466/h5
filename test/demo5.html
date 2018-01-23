@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<link rel="stylesheet" type="text/css" href="../src/css/common.css"/>
+<title>Sprite Sheet</title>
+
+<style>
+
+</style>
+</head>
+<body class="">
+
+	<canvas id="canvas" width="375" height="667"></canvas>
+	
+	
+<script type="text/javascript" src="../src/js/jquery.js"></script>	
+<script type="text/javascript" src="../src/js/createjs-2015.11.26.min.js"></script>
+<script>
+stage = new createjs.Stage(document.getElementById("canvas"));
+var ss = new createjs.SpriteSheet({
+	"animations": {
+		"run": [0, 15]
+	},
+	"images": ["running.png"],
+	"frames": {
+		"height": 70,
+		"width": 51,
+		"regX": 0,
+		"regY": 0,
+		"count": 16
+	}
+});
+var grant = new createjs.Sprite(ss, "run");
+stage.addChild(grant);
+createjs.Ticker.setFPS(40);
+createjs.Ticker.addEventListener("tick", stage);
+
+</script>
+</body>
+</html>

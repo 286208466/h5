@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<link rel="stylesheet" type="text/css" href="../src/css/common.css"/>
+<title>Painting</title>
+
+<style>
+
+</style>
+</head>
+<body class="">
+
+	<canvas id="canvas" width="375" height="667"></canvas>
+	
+	
+<script type="text/javascript" src="../src/js/jquery.js"></script>	
+<script type="text/javascript" src="../src/js/createjs-2015.11.26.min.js"></script>
+<script>
+function init() {
+	var canvas = document.getElementById("canvas");
+	var index = 0;
+	var colors = ["#828b20", "#b0ac31", "#cbc53d", "#fad779", "#f9e4ad",
+	"#faf2db", "#563512", "#9b4a0b", "#d36600", "#fe8a00", "#f9a71f"];
+	var stage = new createjs.Stage(canvas);
+	stage.autoClear = false;
+	stage.enableDOMEvents(true);
+	createjs.Touch.enable(stage);
+	createjs.Ticker.setFPS(24);
+	drawingCanvas = new createjs.Shape();
+	stage.addEventListener("stagemousedown", handleMouseDown);
+	stage.addEventListener("stagemouseup", handleMouseUp);
+	stage.addChild(drawingCanvas);
+	stage.update();
+	
+	function handleMouseDown(event) {
+		color = colors[(index++) % colors.length];
+		stroke = Math.round(Math.random() * 30 + 10);
+		oldPt = new createjs.Point(stage.mouseX, stage.mouseY);
+		oldMidPt = oldPt;
+		stage.addEventListener("stagemousemove", handleMouseMove);
+	}
+
+	function handleMouseMove(event) {
+		
+		var midPt = new createjs.Point(oldPt.x + stage.mouseX>> 1,
+		oldPt.y + stage.mouseY>> 1);
+		drawingCanvas.graphics.clear().setStrokeStyle(stroke, 'round', 'round').beginStroke(color).moveTo(midPt.x, midPt.y).curveTo(oldPt.x, oldPt.y,oldMidPt.x, oldMidPt.y);
+		oldPt.x = stage.mouseX;
+		oldPt.y = stage.mouseY;
+		oldMidPt.x = midPt.x;
+		oldMidPt.y = midPt.y;
+		stage.update();
+		
+	}
+
+	function handleMouseUp(event) {
+		stage.removeEventListener("stagemousemove", handleMouseMove);
+	}
+}
+
+
+
+	
+init();
+</script>
+</body>
+</html>

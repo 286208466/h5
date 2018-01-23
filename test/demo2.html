@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<link rel="stylesheet" type="text/css" href="../src/css/common.css"/>
+<title>拖拽</title>
+
+<style>
+
+</style>
+</head>
+<body class="">
+
+	<canvas id="demoCanvas" width="375" height="667"></canvas>
+	
+	
+<script type="text/javascript" src="../src/js/jquery.js"></script>	
+<script type="text/javascript" src="../src/js/createjs-2015.11.26.min.js"></script>
+<script>
+//demo1
+var stage = new createjs.Stage("demoCanvas");
+stage.mouseMoveOutside = true;
+
+var circle = new createjs.Shape();
+circle.graphics.beginFill("red").drawCircle(100, 100, 50);
+stage.addChild(circle);
+circle.on("mousedown", function(evt){
+	var offset = {
+		x: evt.target.x - evt.stageX,
+		y: evt.target.y - evt.stageY
+	};
+	
+	circle.on("pressmove", function(ev){
+		console.log(ev);
+		ev.target.x = ev.stageX + offset.x;
+		ev.target.y = ev.stageY + offset.y;
+		stage.update();
+	});
+});
+stage.update();
+
+</script>
+</body>
+</html>
