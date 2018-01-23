@@ -108,7 +108,7 @@ p {
     visibility: hidden;
 }
 .hide {
-    display: none;
+    display: none!important;
 }
 .img-circle {
 	border-radius: 50%;

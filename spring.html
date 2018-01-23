@@ -87,7 +87,7 @@
 	</div>
 
 	<audio preload="" id="bgm" class="bgm" loop="loop" autoplay>
-        <source src="./src/file/bgm.mp3" type="audio/mpeg">
+       <!--  <source src="./src/file/bgm.mp3" type="audio/mpeg"> -->
     </audio>
 	<a id="bgAudioBtn" class="on">
 		<i></i>
@@ -97,22 +97,30 @@
 		<canvas id="snowCanvas" width="375" height="667"></canvas>
 		<div class="content">
 			<canvas id="scene1canvas" width="258" height="383"></canvas>
-			<div id="ticketBtn">
-				<div class="circles">
-					<div>
-					</div>
+			<div>
+				<div id="goBtn">
+					<a data-target="success" class="hide go1">回家</a>
+					<a data-target="failure" class="hide go2">继续抢</a>
+					<a data-target="failure" class="hide go3">不抢了</a>
 				</div>
-				<a class="btn">抢</a>
+				<div id="ticketBtn">
+					<div class="circles">
+						<div>
+						</div>
+					</div>
+					<a class="btn">抢</a>
+				</div>
 			</div>
 		</div>
 	</div>
 	
-	<div class="scene scene2">
-		
+	<div class="scene" id="scene2">
+		<canvas id="scene2canvas" width="0" height="0"></canvas>
+		<video id="scene2video" webkit-playsinline="" playsinline=""></video>
 	</div>
 	
-	<div class="scene section3">
-	
+	<div class="scene" id="scene3">
+		<canvas id="scene3canvas" width="375" height="667"></canvas>
 	</div>
 	
 <script type="text/javascript" src="./src/js/jquery.js"></script>	
@@ -126,14 +134,22 @@ var preLoadRes = function(){
 	loader.on("progress", handleProgress);
 	loader.on("complete", handleAllComplete);
 	loader.loadFile({id: "bgm", src: "./src/file/bgm.mp3"});
+	loader.loadFile({id: "video", src: "./src/file/video.mp4"});
 	var manifest = [
 		{id: "scene1", src: "./src/img/spring/scene1.jpg"}
 		,{id: "scene1Ticket", src: "./src/img/spring/scene1Ticket.png"}
-		,{id: "tickets", src: "./src/img/spring/tickets.png"}
-		,{id: "section2", src: "./src/img/spring/scene2.jpg"}
-		,{id: "section3", src: "./src/img/spring/scene3.jpg"}
-		,{id: "section4", src: "./src/img/spring/scene4.jpg"}
-		,{id: "section5", src: "./src/img/spring/scene5.jpg"}
+		,{id: "bgTicket", src: "./src/img/spring/bg-ticket.png"}
+		,{id: "tickets_success", src: "./src/img/spring/tickets_success.png"}
+		,{id: "tickets_failure", src: "./src/img/spring/tickets_failure.png"}
+		
+		
+		,{id: "scene3bg", src: "./src/img/spring/scene3bg.jpg"}
+		,{id: "scene3title", src: "./src/img/spring/scene3title.png"}
+		,{id: "scene3copy", src: "./src/img/spring/scene3copy.png"}
+		,{id: "scene3text", src: "./src/img/spring/scene3text.png"}
+		,{id: "scene3code", src: "./src/img/spring/scene3code.png"}
+		,{id: "scene3logo", src: "./src/img/spring/scene3logo.png"}
+		,{id: "scene3year", src: "./src/img/spring/scene3year.png"}
 		
 	];
 	loader.loadManifest(manifest);
