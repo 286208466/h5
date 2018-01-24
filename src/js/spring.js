@@ -6,9 +6,9 @@ $("#bgAudioBtn").on("touchstart", function(){
 	$this.toggleClass("on");
 	var audio = document.getElementById("bgm");
 	if($this.hasClass("on")){
-		audio.paused && audio.play();
+		createjs.Sound.play("bgm");
 	}else{
-		audio.pause();
+		createjs.Sound.stop("bgm");
 	}
 });
 
@@ -131,7 +131,7 @@ $("#ticketBtn a").on("touchstart", function(){
 	//抢票成功几率50%
 	var isSuccess = Math.random()*2 > 1;
 	var imgFlag = "tickets_failure";
-	//isSuccess = false;
+	isSuccess = false;
 	if(isSuccess){
 		imgFlag = "tickets_success";
 		//成功
@@ -196,72 +196,64 @@ app.initScene2 = function(){
 }
 
 //场景3
-var scene3canvas;
-var scene3stage;
 app.initScene3 = function(){
-	
-	scene3canvas = document.getElementById("scene3canvas");
-	scene3stage = new createjs.Stage(scene3canvas);
-	
-	//设置canvas的宽高
-	scene3canvas.width = windowWidth;
-	scene3canvas.height = windowHeight;
-	
-	//填充背景图
-	var bitmap1 = new createjs.Bitmap(loader.getResult("scene3bg"));
-	var width1 = bitmap1.image.width;
-	var height1 = bitmap1.image.height;
-	//750为设计稿的宽度，图片按屏幕比例缩放
-	bitmap1.scaleX = windowWidth/750;
-	bitmap1.scaleY = windowWidth/750;
-	bitmap1.x = 0;
-	bitmap1.y = 0; 
-	scene3stage.addChild(bitmap1);
-	scene3stage.update();
-	
-	//填充标题
-	var bitmap2 = new createjs.Bitmap(loader.getResult("scene3title"));
-	var width2 = bitmap2.image.width;
-	var height2 = bitmap2.image.height;
-	var offsetX1 = 20;
-	var offsetY1 = 40;
-	//750为设计稿的宽度，图片按屏幕比例缩放
-	bitmap2.scaleX = windowWidth/750;
-	bitmap2.scaleY = windowWidth/750;
-	bitmap2.x = offsetX1;
-	bitmap2.y = offsetY1; 
-	scene3stage.addChild(bitmap2);
-	scene3stage.update();
-	
-	//填充诗词
-	var textBitmap = new createjs.Bitmap(loader.getResult("scene3text"));
-	var width3 = textBitmap.image.width;
-	var height3 = textBitmap.image.height;
-	//750为设计稿的宽度，图片按屏幕比例缩放
-	textBitmap.scaleX = windowWidth/750;
-	textBitmap.scaleY = windowWidth/750;
-	textBitmap.x = offsetX1;
-	textBitmap.y = height2*(windowWidth/750) + offsetY1 + 40; 
-	scene3stage.addChild(textBitmap);
-	scene3stage.update();
-	
-	//填充版权信息
-	var copyBitmap = new createjs.Bitmap(loader.getResult("scene3copy"));
-	//750为设计稿的宽度，图片按屏幕比例缩放
-	copyBitmap.scaleX = windowWidth/750;
-	copyBitmap.scaleY = windowWidth/750;
-	copyBitmap.x = (windowWidth - copyBitmap.image.width/2)/2;
-	copyBitmap.y = windowHeight - copyBitmap.image.height;
-	scene3stage.addChild(copyBitmap);
-	scene3stage.update();
-	
-	
-	//填充按钮
-	var text = new createjs.Text("生成专属藏头诗", "20px Arial", "#ff7700");
-	text.x = (windowWidth - text.lineWidth/2)/2;
-	text.y = windowHeight - copyBitmap.image.height;
-	scene3stage.addChild(text);
-	scene3stage.update();
-	
+	var words = [
+		["鞭炮声震除夕夜", "万家灯火思语时"],
+		["瑞狗衔财报新春", "金蝉吐运福如海"]
+	];
+	var html = createWords(words);
+	$("#words ul").html(html);
 }
+var createWords = function(words){
+	var html = '';
+	for(var i = 0; i < words.length; i++){
+		html += '<li>' + words[i][0] + ',</li>';
+		html += '<li>' + words[i][1] + '。</li>';
+	}
+	return html;
+}
+$(".showInputBtn").on("touchstart", function(){
+	$("#inputDialog input").val("");
+	$("#inputDialog").addClass("show");
+})
 
+//生成
+$("#makeBtn").on("touchstart", function(){
+	var text = $.trim($("#inputDialog input").val());
+	var url = "http://192.168.32.78:9001/poem?start_words=" + text;
+	$("#inputDialog").removeClass("show");
+	
+	$(".showInputBtn").hide();
+	$(".btnGroupWrap").show();
+	
+	$.ajax({
+		url: url,
+		type: "get",
+		dataType: "jsonp",
+		success: function(data){
+			console.log(data);
+			
+		}
+	})
+})
+
+//重新生成
+$("#remakeBtn").on("touchstart", function(){
+	
+})
+
+
+//继续做诗
+$("#reinputBtn").on("touchstart", function(){
+	$(".showInputBtn").trigger("touchstart");
+})
+
+//生成图片
+$("#getImgBtn").on("click", function(){
+	$("#previewWrap").addClass("show");
+	$("#previewWrap img").attr("src", "./src/img/spring/bg-ticket.png");
+})
+
+$("#previewWrap").on("click", function(){
+	$(this).removeClass("show");
+})

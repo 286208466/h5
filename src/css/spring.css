@@ -1,11 +1,11 @@
 .scene {
 	-webkit-transition: all .45s linear;
     transition: all .45s linear;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    bottom: 0;
-    right: 0;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
     -webkit-transform: translate(100%, 0);
 	transform: translate(100%, 0);
@@ -37,6 +37,7 @@
 }
 .scene1 .content>div {
 	height: 58px;
+	font-size: 0;
 }
 #scene1canvas {
 	margin-bottom: 30px;
@@ -128,12 +129,15 @@
 }
 #goBtn a {
 	display: inline-block;	
-	width: 110px;
-	line-height: 34px;
+	width: 2.2rem;
 	text-align: center;
 	color: #2D4354;
 	background: #fff;
-	border-radius: 3px;
+	line-height: 0.72rem;
+	font-size: 0.32rem;	
+	border-radius: 0.24rem;
+	padding: 0 0.36rem;
+	margin: 0 0.1rem;
 }
 #scene2 {
 	background: #fcf0da;
@@ -148,4 +152,139 @@
     transform: translate(-50%,-50%);
     top: 50%;
     left: 50%;
+}
+/*
+	场景3
+*/
+#scene3 {
+	background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 100%;
+    background-image: url(../../src/img/spring/scene3bg.jpg);
+}
+#scene3 .content {
+	width: 100%;
+	height: 100%;
+	
+}
+#scene3 .title {
+	padding: 0.7rem 0.2rem 0 0.5rem;
+}
+#scene3 #words {
+	position: absolute;
+	top: 4.3rem;
+	left: 0.7rem;
+	width: 4rem;
+	height: 5rem;
+	font-size: 0.4rem;
+	color: #E72E36;
+}
+#scene3 .info {
+	position: absolute;
+	bottom: 0;
+	padding-bottom: 0.2rem;
+	width: 100%;
+	text-align: center;
+}
+#scene3 .copyright {
+	width: 1.94rem;
+	height: 0.37rem;
+	background: url(../../src/img/spring/scene3copy.png) no-repeat left top 100%;
+	background-size: 100%;
+	display: block;
+	margin: 0 auto;
+}
+#scene3 .showInputBtn {
+	line-height: 0.72rem;
+	background: #F19894;
+	color: #fff;
+	font-size: 0.32rem;	
+	border-radius: 0.24rem;
+	margin: 0.8rem auto;
+	padding: 0 0.36rem;
+}
+#scene3 .btnGroupWrap {
+	font-size: 0.32rem;	
+	text-align: center;
+	margin: 0.8rem auto;
+	display: none;
+}
+#scene3 .btnGroupWrap .btn {
+	line-height: 0.7rem;
+	background: #f19894;
+	color: #fff;
+	border: 1px solid #f19894;
+	border-radius: 0.24rem;
+	margin: 0 0.28rem;
+	padding: 0 0.36rem;
+}
+#scene3 .btnGroupWrap #reinputBtn {
+	border-color: #A7514D;
+	color: #A7514D;
+	background: none;
+}
+#scene3 .btnGroupWrap p {
+	margin-top: 0.52rem;
+	
+}
+#scene3 .btnGroupWrap p a {
+	color: #A7514D;
+    text-decoration: underline;
+}
+#scene3 .code {
+	width: 1.57rem;
+	height: 2.38rem;
+	margin-right: 1.34rem;
+	float: right;
+	display: block;
+}
+#inputDialog {
+	position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.6);
+    font-size: 0.32rem;
+	-webit-transition: all 0.3s ease;
+	transition: all 0.3s ease;
+	opacity: 0;
+    visibility: hidden;
+}
+#inputDialog.show {
+	opacity: 1;
+	visibility: visible;
+}
+#inputDialog .logo img {
+	margin: 1.2rem auto;
+	display: block;
+	width: 1.42rem;
+}
+#inputDialog .input {
+	position: relative;
+	width: 80%;
+	margin: 0 auto;
+	margin-bottom: 1.2rem;
+}
+#inputDialog .input input {
+	width: 100%;
+	display: block;
+	height: 0.68rem;
+	background: #DBE6EA;
+	padding: 0 0.2rem;
+	border: none;
+	border-radius: 3px;
+}
+#inputDialog .btnWrap {
+	text-align: center;
+	font-size: 0.24rem;
+}
+#inputDialog .btnWrap a {
+	width: 1.44rem;
+	line-height: 0.4rem;
+	text-align: center;
+	background: #A0AAAC;
+	color: #fff;
+	border-radius: 3px;
+	margin-top: 0.5rem;
 }

@@ -31,13 +31,8 @@ body {
 	height: 100%;
 	line-height: 1.6;
 	overflow-x: hidden;
-	max-width: 768px;
+    position: relative;
 	font-family: -apple-system-font,Helvetica Neue,sans-serif;
-}
-@media screen and (min-width:768px){
-	body {
-		margin: 0 auto;
-	}
 }
 body iframe {
 	display:none;
