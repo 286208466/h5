@@ -94,31 +94,39 @@ window.app = window.app || {};
 var windowWidth = window.innerWidth;
 var windowHeight = window.innerHeight;
 //场景1
-var scene1canvas = document.getElementById("scene1canvas");
-var scene1stage = new createjs.Stage(scene1canvas);
+var scene1canvas;
+var scene1stage;
 var scene1grant;
 var scene1SpriteSheet;
 app.initScene1 = function(){
 	//下雪动画
-	initSnowCanvas("snowCanvas");
+	var snowCanvas = document.getElementById("snowCanvas");
+	snowCanvas.width = windowWidth*2;
+	snowCanvas.height = windowHeight*2;
+	$("#snowCanvas").css({"width":windowWidth, "height": windowHeight});
+	
+	//initSnowCanvas("snowCanvas");
 	//设置下雪的背景图片
 	$("#snowCanvas").css("background-image", "url(./src/img/spring/scene1.jpg)");
 	
+	
+	//scene1canvas = document.getElementById("scene1canvas");
+	
+	scene1stage = new createjs.Stage(snowCanvas);
+	
 	//出票机器背景
 	var bg = new createjs.Bitmap(loader.getResult("scene1Ticket"));
-	bg.scaleX = 0.5;
-	bg.scaleY = 0.5;
+	bg.x = windowWidth - bg.image.width/2;
+	bg.y = 100;
 	scene1stage.addChild(bg);
 	scene1stage.update();
 	
 	//票
 	var ticket = new createjs.Bitmap(loader.getResult("bgTicket"));
-	ticket.scaleX = 0.5;
-	ticket.scaleY = 0.5;
 	var container = new createjs.Container();
 	container.addChild(ticket);
-	container.x = 20;
-	container.y = 50;
+	container.x = windowWidth - ticket.image.width/2;
+	container.y = 200;
 	scene1stage.addChild(container);
 	scene1stage.update();
 	
@@ -131,7 +139,7 @@ $("#ticketBtn a").on("touchstart", function(){
 	//抢票成功几率50%
 	var isSuccess = Math.random()*2 > 1;
 	var imgFlag = "tickets_failure";
-	isSuccess = false;
+	isSuccess = true;
 	if(isSuccess){
 		imgFlag = "tickets_success";
 		//成功
@@ -142,14 +150,14 @@ $("#ticketBtn a").on("touchstart", function(){
 		framerate: 9,
 		//图片地址
 		"images": [loader.getResult(imgFlag)],
-		"frames": {"regX": 129, "height": 166, "count": 12, "regY": 0, "width": 258},
+		"frames": {"regX": 0, "height": 389, "count": 12, "regY": 0, "width": 606},
 		"animations": {
 			"run": [0, 11],
 		}
 	});
 	scene1grant = new createjs.Sprite(scene1SpriteSheet, "run");
-	scene1grant.x = scene1stage.canvas.width / 2;
-	scene1grant.y = 160;
+	scene1grant.x = windowWidth - 606/2;
+	scene1grant.y = 360;
 
 	scene1stage.addChild(scene1grant);
 	createjs.Ticker.addEventListener("tick", scene1stage);
@@ -189,10 +197,50 @@ $("#goBtn .go3").on("touchstart", function(){
 });
 
 //场景2
+var scene2canvas;
+var scene2stage;
+var scene2bg;
+
 app.initScene2 = function(){
 	var video = document.getElementById("scene2video");
-	video.src = loader.getItem("video").src;
+	//video.src = loader.getItem("video").src;
 	video.play();
+	
+	/*scene2canvas = document.getElementById("scene2canvas");
+	
+	//解决canvas在手机端图片模糊问题
+	scene2canvas.width = windowWidth*2;
+	scene2canvas.height = windowHeight*2;
+	$("#scene2canvas").css({"width":windowWidth, "height": windowHeight});
+	
+	//创建舞台 
+	scene2stage = new createjs.Stage(scene2canvas);
+	//scene2stage.autoClear = true;
+	
+	//渲染背景图片
+	var container = new createjs.Container();
+	scene2bg = new createjs.Bitmap(loader.getResult("scene2bg"));
+	var scale = (2*windowHeight)/1334;
+	scene2bg.scaleX = scene2bg.scaleY = scale;
+	container.addChild(scene2bg);
+	
+	scene2bg.alpha = 1; 
+	
+	scene2stage.addChild(container);
+	scene2stage.update();
+	
+	createjs.Tween.get(scene2stage).to({x:(windowWidth*2 - scene2bg.image.width*scale)}, 20000, createjs.Ease.linear);
+	
+	createjs.Ticker.setFPS(30);  
+	createjs.Ticker.addEventListener("tick", scene2stage);  */
+	
+}
+function scene2Tick(event){
+	
+	var deltaS = event.delta / 1000;
+	scene2bg.x = scene2bg.x - deltaS * 45;
+	scene2stage.update();
+	
 }
 
 //场景3
@@ -220,6 +268,7 @@ $(".showInputBtn").on("touchstart", function(){
 //生成
 $("#makeBtn").on("touchstart", function(){
 	var text = $.trim($("#inputDialog input").val());
+	$("#remakeBtn").data("text", text);
 	var url = "http://192.168.32.78:9001/poem?start_words=" + text;
 	$("#inputDialog").removeClass("show");
 	
@@ -231,7 +280,10 @@ $("#makeBtn").on("touchstart", function(){
 		type: "get",
 		dataType: "jsonp",
 		success: function(data){
-			console.log(data);
+			if(data.poem.length > 0){
+				var html = createWords(data.poem);
+				$("#words ul").html(html);
+			}
 			
 		}
 	})
@@ -239,7 +291,7 @@ $("#makeBtn").on("touchstart", function(){
 
 //重新生成
 $("#remakeBtn").on("touchstart", function(){
-	
+	$("#makeBtn").trigger("touchstart");
 })
 
 

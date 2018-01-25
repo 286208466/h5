@@ -117,7 +117,7 @@ $$$$$$$$$$$$$$$$$&@                &$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 	position: fixed;
 	top: 50%;
 	left: 50%;
-	width: 0;
+	width: 100%;
 	height: 0;	
 	-webkit-transition: all 0.3s ease;
 	transition: all 0.3s ease;
@@ -131,14 +131,13 @@ $$$$$$$$$$$$$$$$$&@                &$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 #previewWrap img {
 	max-width: 100%;
 	position: absolute;
-	left: 50%;
+	left: 0;
 	top: 50%;
-	-webkit-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
+	-webkit-transform: translate(0, -50%);
+	transform: translate(0, -50%);
 }
 #previewWrap.show {
 	opacity: 1;
-	width: 100%;
 	height: 100%;
 }
 </style>
@@ -158,7 +157,7 @@ $$$$$$$$$$$$$$$$$&@                &$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 	</a>
 	
 	<div class="scene scene1 cur" id="scene1">
-		<canvas id="snowCanvas" width="375" height="667"></canvas>
+		<canvas id="snowCanvas"></canvas>
 		<div class="content">
 			<canvas id="scene1canvas" width="258" height="383"></canvas>
 			<div>
@@ -179,8 +178,8 @@ $$$$$$$$$$$$$$$$$&@                &$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 	</div>
 	
 	<div class="scene" id="scene2">
-		<canvas id="scene2canvas" width="0" height="0"></canvas>
-		<video id="scene2video" webkit-playsinline="" playsinline=""></video>
+		<canvas id="scene2canvas"></canvas>
+		<video id="scene2video" webkit-playsinline="" playsinline="" src="./src/file/zbg.mp4"></video>
 	</div>
 	
 	<div class="scene" id="scene3">
@@ -246,6 +245,7 @@ var designWidth = 750;
 $('html').css({
 	'font-size': htmlWidth / designWidth * 100 + 'px'
 });
+
 var loader;
 var preLoadRes = function(){
 	loader = new createjs.LoadQueue();
@@ -254,13 +254,16 @@ var preLoadRes = function(){
 	loader.on("progress", handleProgress);
 	loader.on("complete", handleAllComplete);
 	loader.loadFile({id: "bgm", src: "./src/file/bgm.mp3"});
-	loader.loadFile({id: "video", src: "./src/file/zbg.mp4"});
+	//loader.loadFile({id: "video", src: "./src/file/video.mp4"});
 	var manifest = [
 		{id: "scene1", src: "./src/img/spring/scene1.jpg"}
 		,{id: "scene1Ticket", src: "./src/img/spring/scene1Ticket.png"}
 		,{id: "bgTicket", src: "./src/img/spring/bg-ticket.png"}
 		,{id: "tickets_success", src: "./src/img/spring/tickets_success.png"}
 		,{id: "tickets_failure", src: "./src/img/spring/tickets_failure.png"}
+		
+		,{id: "scene2bg", src: "./src/img/spring/scene2.jpg"}
+		
 		,{id: "scene3text", src: "./src/img/spring/scene3text.png"}
 		
 	];
