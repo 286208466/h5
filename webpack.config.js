@@ -5,11 +5,15 @@ var uglifyJsPlugin = require('uglifyjs-webpack-plugin');
 //雪碧图
 var SpritesmithPlugin = require('webpack-spritesmith');
 
+//css生成新文件
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+
 var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = {
 	entry: {
 		'spring': './src/js/spring.js',
+		'springstyle': ['./src/css/common.css', './src/css/spring.css']
 		//'jquery': ['./src/js/jquery-3.2.1.min.js']
 	}
 	,output: {
@@ -20,20 +24,7 @@ module.exports = {
 		rules: [
 			{ 
 				test: /\.css$/, 
-				use: [
-					{ 
-						loader: 'style-loader', 
-						options: {
-							minimize: true
-						} 
-					},
-			        {
-			            loader: 'css-loader',
-			            options: {
-							minimize: true
-						} 
-			        }
-				]
+				loader:ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader!less-loader' })
 			},
 			{
 		        test: /\.(png|jpg|gif)$/,
@@ -85,6 +76,7 @@ module.exports = {
 		    filename: 'common.bundle.js',
 		    minChunks: Infinity
 		})*/
+		,new ExtractTextPlugin("[name].css")
 		,new OptimizeCssAssetsPlugin({
 	        cssProcessor: require('cssnano'),
 	        cssProcessorOptions: { discardComments: {removeAll: true } },

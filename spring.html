@@ -41,134 +41,7 @@ $$$$$$$$$$$$$$$$$&@                &$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 <meta name="format-detection" content="telephone=no" />
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
 <title></title>
-<style>
-#bgAudioBtn {
-    position: fixed;
-    top: 0.3rem;
-    right: 0.3rem;
-    width: 0.64rem;
-    height: 0.64rem;
-    z-index: 999;
-}
-#bgAudioBtn i {
-	position: absolute;
-	width: 0.64rem;
-    height: 0.64rem;
-}
-#bgAudioBtn i:after {
-	content: "";
-    position: absolute;
-    width: 0.64rem;
-    height: 0.64rem;
-    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADQAAAA0CAMAAADypuvZAAABhlBMVEVHcEwAAAAAAAD5+fkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASEhJ9fX1zc3NLS0sGBgYYGBi/v79fX1+Wlpb29vaMjIz9/f3o6Oj19fVWVlbQ0NAjIyP4+Pj7+/vHx8fU1NTs7Ozg4OD8/Pz6+vr19fU7Ozs2NjbJycng4ODd3d3m5ualpaWFhYU/Pz/4+Ph3d3eIiIjl5eX////CwsLW1tb6+vro6Ojs7Oz8/PzLy8vj4+Pk5OTj4+Pq6ur7+/tZWVlcXFzy8vLh4eH6+vrq6uooKCjw8PBiYmLw8PDT09Py8vK8vLzz8/Ojo6P19fXAwMD5+fkMDAzl5eXh4eHT09P29vb5+fn5+fmxsbGSkpL9/f1lZWVpaWm0tLSNjY3a2tp7e3v///+cnJyVlZX29vb7+/u4uLj39/ezs7Ps7Ozz8/Pz8/PMzMz19fXu7u6/v7/y8vIeHh729vbw8PDo6Ojh4eHX19fn5+fS0tLq6urj4+P///+k1oEZAAAAgXRSTlMAIw3lCR8YJiQHCiAlAhEeFylBPjMnKWk4TNZH/KfONX0r3vFyg7KW9uvRLy9zlZKmVUUw20BFo/1theiptfJ2oKGdrew2N8iZ6bIsvTnBgsVnylTPauEoopuA1OPkXEv7OjpgSIxA/FBL2e5i2l60zct507toxirawqyah6Z/r5yOY4ppAAACNklEQVRIx6WWVXfbQBCFV47tKzm2ZBliCDNz0jZlbsrMzMwp4/zzPli2tLMr2UedJ2lH39nV3SEhVLPstGOYgGk4adsSHVgyb0AyI59sgyRS0FgqEbWLFgGAVNhuuTQiLJ3TMVY3Iq1bI0nGRBszM4oCWbS1LNMj0wEDZKW9LBMdmRn4r5xWg52HJ3sUNXwN9VqPEA30Ksq37tRfO33Rf+4ior4Dg4xq3nIgDgZnzksQ0egYiw1P7eBa9dJlGSLa7UpUgm8EoDQwzyBaUrdKskPPnhtiEFWUv8pzgebOnPWgry8b0MjVoD8vhDAUrYdPPW5ABayPXyEieihlpRCW5obciQUPAnpuTBFdk9yWsHX36n7/W8ZPKgAAHt2muuS1Q6KhvPSrjN/rjZfirXuuHBVOSGz++ON/eHfqQdDlaHTwbHFttfVcuS8rEZ4U36ZnQxJERGTP2/dzekcUhA+fS3oo/HiTLubflbTH0whxsrLQf31stWvrCz59rKp+QyP50HQjkZ5SAXg1U1Q+cJTLdU+0gpsKAN7Ui2rK8zA6SDKE5dcr7BObB+y2HRzCs/pzsIBlSiwGGPIOVntRY6nBknBPgNnbLHsra8ssCeV07w9A21urT27eYUVMKiwbPrPriL9cvDAs1zCphJWPNZnjNX2gJIRaw0oTRETUd6ga0kjVsgwAveP7N/cdDYvIZHQD0LfeNq1G23hz/9fU4rXPeI063kgQb/iIN+bEG6hijm4xh8TOxtF/LhWjzcPoIy0AAAAASUVORK5CYII=) no-repeat;
-    background-size: cover;
-}
-#bgAudioBtn.on i {
-	-webkit-animation: bgm 1s linear 0s infinite;
-    animation: bgm 1s linear 0s infinite;
-}
-#bgAudioBtn.on i:after {
-    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADQAAAA0CAMAAADypuvZAAABDlBMVEUAAAAAAAAAAACampoAAAAAAAAAAABHcEz29vYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD7+/sYGBgeHh7////o6Ojo6OjGxsb6+vp1dXXe3t78/PylpaXq6uoGBgbu7u5LS0vm5ub19fX7+/vh4eHu7u7Kysrq6urT09Pm5uZ3d3cMDAxZWVl/f3+dnZ39/f3T09PJycnb29uPj4/s7Oz29vbz8/Nubm7b29uMjIy1tbXb29s/Pz/7+/v5+fm8vLygoKDo6Oj6+vpzc3OQkJCDg4O7u7v9/f0tLS34+Pj////8/PwSEhLj4+Pl5eXe3t7CwsKzs7P9/f37+/ucnJz9/f1WVlYxMTH////bZPQRAAAAWXRSTlMmByNPGAkfANckDQIKJSARHhfvKSr8qaxw5j+V8VWsJ70zpNDsmbt1rYClQCg2QlH2gXOOSbXVzjyPR2GQMPDjaFGr6T5KRGb8Ld/99imfo5RtX/rrUPg1LreKM90AAAGtSURBVEjHpdbXdoMwDABQmWJSRgI0O+nee++9997+/x9pmqQJ2DLmuHrIg8k9gJAtQUYM4puBYQPYRmD6BPkD8As0NCAWRkgVyLEACctJQBQlTUYlyDUhIUwXQyQHiZEjIvJsUITt8cjJgjKyThx5KUxDeVFEbEgVNukiF83BzPhEQciG20F4rjcZG1sXMv+HKP4svYyx4ugCt0rbyJIjxvqnuNpoIQeSEGPT+diy00SWArEyfyuQvVEEsQr3VpAJ5eizjY4eouthAxly9PH1+nT4q65iuzIDBOSop/F7UL9m7DR2gYCvQAAnZ+w2dsEHU4mgVr27iVUFBGoEF/eX0QsBGCkQHJ/HMgF2GsRtkITNI0Wgh7QeD0lEfm//8fnlW4oMJOWr1WbBvb/JUCB83KFyp7hlyBTKqM6UyOcLdrGoRoTfGjsRw3bxPAibcCNilgsoCoXtXoqgQfzpqHCwVLqmbxvvb+IRNr/VMQP4jRzksBwZbpnJGshuhB3LS2ul2ZU5WUXS5AaAV4Oi1aCN1/1fU9Nrn3qNWm8k0Bs+9MYcvYFKc3TTHBLTjaM/Ed1Zn+wBdNwAAAAASUVORK5CYII=) no-repeat;
-    background-size: cover;
-}
-@-webkit-keyframes bgm {
-    0% {
-        -webkit-transform: rotate(0deg)
-    }
-
-    100% {
-        -webkit-transform: rotate(360deg)
-    }
-}
-/*
-	图片预览
-*/
-#previewWrap {
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	width: 100%;
-	height: 0;	
-	-webkit-transition: all 0.3s ease;
-	transition: all 0.3s ease;
-	opacity: 0;
-	-webkit-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
-	overflow: hidden;
-	background: #000;
-	z-index: 10001;
-}
-#previewWrap img {
-	max-width: 100%;
-	position: absolute;
-	left: 0;
-	top: 50%;
-	-webkit-transform: translate(0, -50%);
-	transform: translate(0, -50%);
-}
-#previewWrap.show {
-	opacity: 1;
-	height: 100%;
-}
-
-/*
-	预加载
-*/
-#preloadWrap {
-	width: 100%;
-	height: 100%;
-	background: #000;
-	position: relative;
-	overflow: hidden;
-	z-index: 999;
-	text-align: center;
-}
-#preloadWrap .text {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
-	color: #fff;
-	opacity: 0;
-	-webkit-transition: all 2s ease;
-	transition: all 2s ease;
-    font-size: 0.42rem;
-}
-#preloadWrap .flex {
-	justify-content: center;
-    align-items: center;
-}
-#topScreen, #bottomScreen {
-	position: absolute;
-	height: 50%;
-	background: #000;
-	width: 100%;
-	transition: all 0.5s ease;
-	top: 0;
-	opacity: 1;
-	z-index: 2;
-}
-#topScreen .logo {
-    position: absolute;
-    bottom: 5px;
-    left: 50%;
-    transform: translate(-50%, 0);
-}
-#bottomScreen {
-	top: auto;
-	bottom: 0;
-}
-#mainView.show #topScreen {
-	-webkit-transform: translate(0, -100%);
-	transform: translate(0, -100%);
-	opacity: 0;
-}
-#mainView.show #bottomScreen {
-	-webkit-transform: translate(0, 100%);
-	transform: translate(0, 100%);
-	opacity: 0;
-}  
-</style>
+<link rel="stylesheet" type="text/css" href="./dist/springstyle.css"/>
 </head>
 <body class="spring-body">
 
@@ -208,30 +81,22 @@ $$$$$$$$$$$$$$$$$&@                &$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 					<div>
 					</div>
 				</div>
-				<a class="btn">抢</a>
-			</div>
-			
-		</div>
-	</div>
-	
-	<div class="scene scene1" id="scene1">
-		<canvas id="snowCanvas"></canvas>
-		<div class="content">
-			<canvas id="scene1canvas" width="258" height="383"></canvas>
-			<div>
+				<a class="btn circleBtn">抢</a>
+				
 				<div id="goBtn">
 					<a data-target="success" class="hide go1">回家</a>
 					<a data-target="failure" class="hide go2">继续抢</a>
 					<a data-target="failure" class="hide go3">不抢了</a>
 				</div>
-				
+			
 			</div>
+			
+			
 		</div>
 	</div>
 	
 	<div class="scene" id="scene2">
-		<canvas id="scene2canvas"></canvas>
-		<video id="scene2video" webkit-playsinline="" playsinline="" src="./src/file/zbg.mp4"></video>
+		<video id="video" webkit-playsinline="" playsinline=""></video>
 	</div>
 	
 	<div class="scene" id="scene3">
@@ -292,156 +157,93 @@ $$$$$$$$$$$$$$$$$&@                &$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 <script type="text/javascript" src="./src/js/tweenjs/CSSPlugin.js"></script>
 <script>
 
-var htmlWidth = $('html').width();
-var designWidth = 750;
+var isPC = function (){
+    var userAgentInfo = navigator.userAgent.toLowerCase();
+    var Agents = new Array("android", "iphone", "symbianOS", "windows phone", "ipad", "ipod");
+    var flag = true;
+    for (var v = 0; v < Agents.length; v++) {
+        if (userAgentInfo.indexOf(Agents[v]) > 0) { flag = false; break; }
+    }
+    return flag;
+}
 
-$('html').css({
-	'font-size': htmlWidth / designWidth * 100 + 'px'
-});
 
+var initSnowCanvas = function(id){
+	function rnd(n, m){
+		return Math.floor(Math.random()*(m-n) + n);
+	};
 
-var startTime = new Date().getTime();
-function preloading(isShowPre){
-	createjs.CSSPlugin.install(createjs.Tween);
-	
-	if(isShowPre){
-		
-		var t1 = document.getElementById("t1");
-		createjs.Tween.get(t1, {loop: false})
-			.set({opacity: "1"}, t1.style)
-			.wait(2000)
-			.set({opacity: "0"}, t1.style)
-			
-		var t2 = document.getElementById("t2");
-		createjs.Tween.get(t2, {loop: false})
-			.wait(4000)
-			.set({opacity: "1"}, t2.style)
-			.wait(2000)
-			.set({opacity: "0"}, t2.style)
-			
-		var t3 = document.getElementById("t3");
-		createjs.Tween.get(t3, {loop: false})
-			.wait(8000)
-			.set({opacity: "1"}, t3.style)
-			.wait(2000)
-			.set({opacity: "0"}, t3.style)
-			
-		var t4 = document.getElementById("t4");
-		createjs.Tween.get(t4, {loop: false})
-			.wait(12000)
-			.set({opacity: "1"}, t4.style)
-			.wait(2000)
-			.set({opacity: "0"}, t4.style)
-		
-		var mainView = document.getElementById("mainView");
-		createjs.Tween.get(mainView, {loop: false})
-			.wait(16000)
-			.set({opacity: "1"}, mainView.style);
-		
-	}else{
-		
-		var mainView = document.getElementById("mainView");
-		createjs.Tween.get(mainView, {loop: false})
-			.wait(1000)
-			.set({opacity: "1"}, mainView.style);
-		
+	function d2a(n){
+		return n*Math.PI/180;
+	};
+
+	//在画布中生成雪花：
+	var snowCanvas = document.getElementById(id);
+	var ctx = snowCanvas.getContext("2d");
+	var maxW = window.innerWidth;
+	var maxH = window.innerHeight;
+	snowCanvas.width = maxW;
+	snowCanvas.height = maxH;
+	var arr = [];
+	var width = 20; 
+
+	for(var i=0; i<100; i++){
+		arr.push({
+			"left":rnd(0, 800),
+			"top":rnd(0, 600),
+			"deg":rnd(-10, 10),
+			"scale":rnd(2, 10) 
+		});
 	}
-	createjs.Ticker.setFPS(10);
-	
-	//加载资源
-	loadResource();
-	
-}
-preloading(false);
 
-//加载资源
-var loader;
-function loadResource(){
-	loader = new createjs.LoadQueue();
-	loader.installPlugin(createjs.Sound);
-	loader.on("fileload", handleFileComplete);
-	loader.on("progress", handleProgress);
-	loader.on("complete", handleAllComplete);
-	loader.loadFile({id: "bgm", src: "./src/file/bgm.mp3"});
-	loader.loadFile({id: "video", src: "./src/file/video.mp4"});
-	var manifest = [
-		{id: "mainCanvasBg", src: "./src/img/spring/mainCanvasBg.jpg"}
-		,{id: "scene1Ticket", src: "./src/img/spring/scene1Ticket.png"}
-		,{id: "bgTicket", src: "./src/img/spring/bg-ticket.png"}
-		,{id: "tickets_success", src: "./src/img/spring/tickets_success.png"}
-		,{id: "tickets_failure", src: "./src/img/spring/tickets_failure.png"}
-		/* 
-		,{id: "scene2bg", src: "./src/img/spring/scene2.jpg"}
-		
-		,{id: "scene3text", src: "./src/img/spring/scene3text.png"} */
-		
-	];
-	loader.loadManifest(manifest);
-}
-function handleFileComplete(evt){
-	
-}
-//加载完成事件
-function handleAllComplete(){
-	
-	//播放音乐
-	createjs.Sound.play("bgm");
-	
-	var endTime = new Date().getTime();
-	$("#mainView").addClass("show");
-	$("#bgAudioBtn").css("z-index", "1000");
-	
-	//初始化界面
-	initMainView();
-	
-}
+	setInterval(function(){
+		ctx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
+		ctx.save();
 
-function handleProgress(evt){
-	$("#bottomScreen p").text(Math.floor(evt.loaded*100) + "%");
-}
+		for(var i=0; i<arr.length; i++){
+			var h = 0.5 * arr[i].scale;
+			arr[i].left = arr[i].left + Math.tan(d2a(arr[i].deg))*h;
+			arr[i].top = arr[i].top + h;
 
-//初始化界面
-var windowWidth = window.innerWidth;
-var windowHeight = window.innerHeight;
-var mainCanvas;
-var mainstage;
-var mainCanvasBg;
-function initMainView(){
-	
-	//解决图片模糊问题
-	mainCanvas = document.getElementById("mainCanvas");
-	mainCanvas.width = windowWidth*2;
-	mainCanvas.height = windowHeight*2;
-	$("#mainCanvas").css({"width":windowWidth, "height": windowHeight});
-	
-	//创建舞台 
-	mainstage = new createjs.Stage(mainCanvas);
-	
-	//渲染背景图片
-	var container = new createjs.Container();
-	mainCanvasBg = new createjs.Bitmap(loader.getResult("mainCanvasBg"));
-	var scale = (2*windowHeight)/1334;
-	mainCanvasBg.scaleX = mainCanvasBg.scaleY = scale;
-	container.addChild(mainCanvasBg);
-	
-	mainstage.addChild(container);
-	
-	//出票机器
-	var bg = new createjs.Bitmap(loader.getResult("scene1Ticket"));
-	bg.x = windowWidth - bg.image.width/2;
-	bg.y = 100;
-	mainstage.addChild(bg);
-	
-	//票
-	var ticket = new createjs.Bitmap(loader.getResult("bgTicket"));
-	ticket.x = windowWidth - ticket.image.width/2;
-	ticket.y = 200;
-	mainstage.addChild(ticket);
-	
-	mainstage.update();
-	
-}
+			//若已在画面外则删除
+			if(arr[i].left < 0 || arr[i].left > maxW || arr[i].top > maxH){
+				arr.splice(i--, 1);
+				continue;
+			}
 
+			var width_i = arr[i].scale;
+			var ra = ctx.createRadialGradient(arr[i].left, arr[i].top, width_i/4, arr[i].left, arr[i].top, width_i);
+			ra.addColorStop(0, "rgba(255,255,255,1)");
+			ra.addColorStop(1, "rgba(255,255,255,0.1)");
+			ctx.fillStyle = ra;
+
+			ctx.beginPath();
+			ctx.arc(arr[i].left, arr[i].top, width_i, 0, 2*Math.PI);
+			ctx.fill();
+		}
+
+		ctx.restore();
+	}, 50);
+
+	//不断增加新的雪花
+	function next(){
+		setTimeout(function(){
+			if(arr.length < 200){
+				for(var i=0; i<20; i++){
+					arr.push({
+							"left":rnd(0, 800),
+							"top":0,
+							"deg":rnd(-10, 10),
+							"scale":rnd(2, 10) 
+							});
+				}
+			}
+			next();
+		}, Math.random()*200+500);
+	};
+
+	next();
+}
 </script>
 <script type="text/javascript" src="./dist/spring.js"></script>
 <!-- 分享 -->
@@ -517,10 +319,10 @@ $.ajax({
 			});
 			wx.ready(function(){
 				
-				var title ="亲，这里有很多漂亮的衣衣在等你哦~";
-				var link=basePath+"view/store/d.html?r="+realm+"&s="+shop_code;
-				var desc= "";
-				var imgUrl= $("#def_pic").attr("src");
+				var title = "前任？抢票？过年攻略！";
+				var link = "./h5/spring.html";
+				var desc= "满怀期待地回家，迫不及待地挡枪";
+				var imgUrl = "./src/img/spring/wx.jpg";
 				
 				//监听“分享给朋友”，按钮点击、自定义分享内容及分享结果接口
 				wx.onMenuShareAppMessage({
