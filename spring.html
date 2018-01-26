@@ -81,37 +81,6 @@ $$$$$$$$$$$$$$$$$&@                &$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     }
 }
 /*
-	加载
-
-#loadingWrap {
-	width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    text-align: center;
-    background-color: #ffbe00;
-    z-index: 1000;
-}
-#loadingWrap img {
-	width: 12%;
-    top: 40%;
-    left: 45%;
-    margin: auto;
-    position: absolute;
-}
-#loadingWrap span {
-	display: block;
-    color: #fff;
-    width: 100%;
-    top: 58%;
-    left: 0;
-    margin: auto;
-    position: absolute;
-    font-size: 0.36rem;
-}
-*/
-/*
 	图片预览
 */
 #previewWrap {
@@ -177,6 +146,7 @@ $$$$$$$$$$$$$$$$$&@                &$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 	transition: all 0.5s ease;
 	top: 0;
 	opacity: 1;
+	z-index: 2;
 }
 #topScreen .logo {
     position: absolute;
@@ -201,11 +171,6 @@ $$$$$$$$$$$$$$$$$&@                &$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 </style>
 </head>
 <body class="spring-body">
-
-	<!-- <div id="loadingWrap">
-		<img src="./src/img/spring/loading.gif">
-		<span>0%</span>
-	</div> -->
 
 	<audio preload="" id="bgm" class="bgm hide" loop="loop" autoplay>
        <!--  <source src="./src/file/bgm.mp3" type="audio/mpeg"> -->
@@ -237,6 +202,15 @@ $$$$$$$$$$$$$$$$$&@                &$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 				<p>0%</p>
 			</div>
 			<canvas id="mainCanvas" width="375" height="667"></canvas>
+			
+			<div id="ticketBtn">
+				<div class="circles">
+					<div>
+					</div>
+				</div>
+				<a class="btn">抢</a>
+			</div>
+			
 		</div>
 	</div>
 	
@@ -250,13 +224,7 @@ $$$$$$$$$$$$$$$$$&@                &$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 					<a data-target="failure" class="hide go2">继续抢</a>
 					<a data-target="failure" class="hide go3">不抢了</a>
 				</div>
-				<div id="ticketBtn">
-					<div class="circles">
-						<div>
-						</div>
-					</div>
-					<a class="btn">抢</a>
-				</div>
+				
 			</div>
 		</div>
 	</div>
@@ -384,7 +352,7 @@ function preloading(isShowPre){
 	loadResource();
 	
 }
-preloading(true);
+preloading(false);
 
 //加载资源
 var loader;
@@ -395,17 +363,17 @@ function loadResource(){
 	loader.on("progress", handleProgress);
 	loader.on("complete", handleAllComplete);
 	loader.loadFile({id: "bgm", src: "./src/file/bgm.mp3"});
-	//loader.loadFile({id: "video", src: "./src/file/video.mp4"});
+	loader.loadFile({id: "video", src: "./src/file/video.mp4"});
 	var manifest = [
-		{id: "scene1", src: "./src/img/spring/scene1.jpg"}
+		{id: "mainCanvasBg", src: "./src/img/spring/mainCanvasBg.jpg"}
 		,{id: "scene1Ticket", src: "./src/img/spring/scene1Ticket.png"}
 		,{id: "bgTicket", src: "./src/img/spring/bg-ticket.png"}
 		,{id: "tickets_success", src: "./src/img/spring/tickets_success.png"}
 		,{id: "tickets_failure", src: "./src/img/spring/tickets_failure.png"}
-		
+		/* 
 		,{id: "scene2bg", src: "./src/img/spring/scene2.jpg"}
 		
-		,{id: "scene3text", src: "./src/img/spring/scene3text.png"}
+		,{id: "scene3text", src: "./src/img/spring/scene3text.png"} */
 		
 	];
 	loader.loadManifest(manifest);
@@ -420,8 +388,8 @@ function handleAllComplete(){
 	createjs.Sound.play("bgm");
 	
 	var endTime = new Date().getTime();
-	//$("#loadingWrap").fadeOut(400);
 	$("#mainView").addClass("show");
+	$("#bgAudioBtn").css("z-index", "1000");
 	
 	//初始化界面
 	initMainView();
@@ -430,15 +398,230 @@ function handleAllComplete(){
 
 function handleProgress(evt){
 	$("#bottomScreen p").text(Math.floor(evt.loaded*100) + "%");
-	//$("#loadingWrap span").text(Math.floor(evt.loaded*100) + "%");
 }
 
 //初始化界面
-function initMainView = function(){
+var windowWidth = window.innerWidth;
+var windowHeight = window.innerHeight;
+var mainCanvas;
+var mainstage;
+var mainCanvasBg;
+function initMainView(){
+	
+	//解决图片模糊问题
+	mainCanvas = document.getElementById("mainCanvas");
+	mainCanvas.width = windowWidth*2;
+	mainCanvas.height = windowHeight*2;
+	$("#mainCanvas").css({"width":windowWidth, "height": windowHeight});
+	
+	//创建舞台 
+	mainstage = new createjs.Stage(mainCanvas);
+	
+	//渲染背景图片
+	var container = new createjs.Container();
+	mainCanvasBg = new createjs.Bitmap(loader.getResult("mainCanvasBg"));
+	var scale = (2*windowHeight)/1334;
+	mainCanvasBg.scaleX = mainCanvasBg.scaleY = scale;
+	container.addChild(mainCanvasBg);
+	
+	mainstage.addChild(container);
+	
+	//出票机器
+	var bg = new createjs.Bitmap(loader.getResult("scene1Ticket"));
+	bg.x = windowWidth - bg.image.width/2;
+	bg.y = 100;
+	mainstage.addChild(bg);
+	
+	//票
+	var ticket = new createjs.Bitmap(loader.getResult("bgTicket"));
+	ticket.x = windowWidth - ticket.image.width/2;
+	ticket.y = 200;
+	mainstage.addChild(ticket);
+	
+	mainstage.update();
 	
 }
 
 </script>
 <script type="text/javascript" src="./dist/spring.js"></script>
+<!-- 分享 -->
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js" charset="utf-8"></script>
+<script>
+var _url = window.location.href;
+var _appId = "wxf5ace9dbc2ed5a56";
+var _secret = "ada508eeb01215a8c8736ede0b24cbc0";
+$.ajax({
+	url:"/scsf/core/activity.signature.do",
+	type:"post",
+	data:{
+		"url": _url,
+		"appId": _appId,
+		"secret": _secret
+	},
+	success:function(data){
+		if(data.status==1){
+			_appId=data.appId
+			_timestamp=data.timestamp;
+			_nonceStr=data.nonceStr;
+			_signature=data.signature;
+			
+			wx.config({
+				//debug: true, 
+				// 必填，公众号的唯一标识
+			    appId: _appId,
+			 	// 必填，生成签名的时间戳
+			    timestamp: _timestamp,
+				// 必填，生成签名的随机串
+			    nonceStr: _nonceStr,
+			 	// 必填，签名，见附录1
+			    signature: _signature,
+			 	// 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+			    jsApiList: [
+					'checkJsApi',
+					'onMenuShareTimeline',
+					'onMenuShareAppMessage',
+					'onMenuShareQQ',
+					'onMenuShareWeibo',
+					'onMenuShareQZone',
+					'hideMenuItems',
+					'showMenuItems',
+					'hideAllNonBaseMenuItem',
+					'showAllNonBaseMenuItem',
+					'translateVoice',
+					'startRecord',
+					'stopRecord',
+					'onVoiceRecordEnd',
+					'playVoice',
+					'onVoicePlayEnd',
+					'pauseVoice',
+					'stopVoice',
+					'uploadVoice',
+					'downloadVoice',
+					'chooseImage',
+					'previewImage',
+					'uploadImage',
+					'downloadImage',
+					'getNetworkType',
+					'openLocation',
+					'getLocation',
+					'hideOptionMenu',
+					'showOptionMenu',
+					'closeWindow',
+					'scanQRCode',
+					'chooseWXPay',
+					'openProductSpecificView',
+					'addCard',
+					'chooseCard',
+					'openCard'
+			    ]
+			});
+			wx.ready(function(){
+				
+				var title ="亲，这里有很多漂亮的衣衣在等你哦~";
+				var link=basePath+"view/store/d.html?r="+realm+"&s="+shop_code;
+				var desc= "";
+				var imgUrl= $("#def_pic").attr("src");
+				
+				//监听“分享给朋友”，按钮点击、自定义分享内容及分享结果接口
+				wx.onMenuShareAppMessage({
+					title: title,
+					desc: desc,
+					link: link,
+					imgUrl: imgUrl,
+					success: function (res) {
+						shareSuccessCallback();
+					},
+					cancel: function (res) {
+					  
+					},
+					fail: function (res) {
+					  console.log(JSON.stringify(res));
+					}
+				});
+				
+				// 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
+				wx.onMenuShareTimeline({
+					title: title,
+					link: link,
+					imgUrl: imgUrl,
+					success: function (res) {
+						shareSuccessCallback();
+					},
+					cancel: function (res) {
+					
+					},
+					fail: function (res) {
+						//alert(JSON.stringify(res));
+					}
+				});
+
+				// 监听“分享到QQ”按钮点击、自定义分享内容及分享结果接口
+				wx.onMenuShareQQ({
+					title: title,
+					desc:desc ,
+					link: link,
+					imgUrl: imgUrl,
+					success: function (res) {
+						shareSuccessCallback();
+					},
+					cancel: function (res) {
+					
+					},
+					fail: function (res) {
+						//alert(JSON.stringify(res));
+					}
+				});
+				  
+				//监听“分享到微博”按钮点击、自定义分享内容及分享结果接口
+				wx.onMenuShareWeibo({
+					title: title,
+					desc: desc,
+					link: link,
+					imgUrl: imgUrl,
+					success: function (res) {
+						shareSuccessCallback();
+					},
+					cancel: function (res) {
+					
+					},
+					fail: function (res) {
+						//alert(JSON.stringify(res));
+					}
+				});
+
+				// 2.5 监听“分享到QZone”按钮点击、自定义分享内容及分享接口
+				wx.onMenuShareQZone({
+					title: title,
+					desc: desc,
+					link: link,
+					imgUrl: imgUrl,
+					success: function (res) {
+						shareSuccessCallback();
+					},
+					cancel: function (res) {
+						
+					},
+					fail: function (res) {
+						//alert(JSON.stringify(res));
+					}
+				});
+				
+				
+			});
+			wx.error(function (res) {
+				console.log("微信接口调用失败，请稍后...");
+			});
+		}
+			
+	},
+	error:function(data){
+		
+	}
+});
+	
+function shareSuccessCallback(){
+	
+}
+</script>
 </body>
 </html>
