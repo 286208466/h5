@@ -121,3 +121,13 @@ p {
 	vertical-align: middle;
 	text-align: center;
 }
+/*
+	flex布局
+*/
+.flex {
+    display: flex;
+}
+.flexitem {
+    -moz-box-flex: 1;
+    flex: 1 1 0;
+}

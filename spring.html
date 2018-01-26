@@ -82,7 +82,7 @@ $$$$$$$$$$$$$$$$$&@                &$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 }
 /*
 	加载
-*/
+
 #loadingWrap {
 	width: 100%;
     height: 100%;
@@ -110,6 +110,7 @@ $$$$$$$$$$$$$$$$$&@                &$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     position: absolute;
     font-size: 0.36rem;
 }
+*/
 /*
 	图片预览
 */
@@ -140,14 +141,71 @@ $$$$$$$$$$$$$$$$$&@                &$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 	opacity: 1;
 	height: 100%;
 }
+
+/*
+	预加载
+*/
+#preloadWrap {
+	width: 100%;
+	height: 100%;
+	background: #000;
+	position: relative;
+	overflow: hidden;
+	z-index: 999;
+	text-align: center;
+}
+#preloadWrap .text {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	color: #fff;
+	opacity: 0;
+	-webkit-transition: all 2s ease;
+	transition: all 2s ease;
+    font-size: 0.42rem;
+}
+#preloadWrap .flex {
+	justify-content: center;
+    align-items: center;
+}
+#topScreen, #bottomScreen {
+	position: absolute;
+	height: 50%;
+	background: #000;
+	width: 100%;
+	transition: all 0.5s ease;
+	top: 0;
+	opacity: 1;
+}
+#topScreen .logo {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+#bottomScreen {
+	top: auto;
+	bottom: 0;
+}
+#mainView.show #topScreen {
+	-webkit-transform: translate(0, -100%);
+	transform: translate(0, -100%);
+	opacity: 0;
+}
+#mainView.show #bottomScreen {
+	-webkit-transform: translate(0, 100%);
+	transform: translate(0, 100%);
+	opacity: 0;
+}  
 </style>
 </head>
 <body class="spring-body">
 
-	<div id="loadingWrap">
+	<!-- <div id="loadingWrap">
 		<img src="./src/img/spring/loading.gif">
 		<span>0%</span>
-	</div>
+	</div> -->
 
 	<audio preload="" id="bgm" class="bgm hide" loop="loop" autoplay>
        <!--  <source src="./src/file/bgm.mp3" type="audio/mpeg"> -->
@@ -156,7 +214,33 @@ $$$$$$$$$$$$$$$$$&@                &$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 		<i></i>
 	</a>
 	
-	<div class="scene scene1 cur" id="scene1">
+	<div id="preloadWrap">
+		<div class="text flex" id="t1">
+			<p class="flexitem">请放心</p>
+		</div>
+		<div class="text flex" id="t2">
+			<p class="flexitem">您的手机是正常的</p>
+		</div>
+		<div class="text flex" id="t3">
+			<p class="flexitem">耐心点，还在加载中呢</p>
+		</div>
+		<div class="text flex" id="t4">
+			<p class="flexitem">让我们来看看进度条吧</p>
+		</div>
+		<div class="text" id="mainView">
+			<div id="topScreen">
+				<a class="logo">
+					<img src="./src/img/spring/logo.png">
+				</a>
+			</div>
+			<div id="bottomScreen">
+				<p>0%</p>
+			</div>
+			<canvas id="mainCanvas" width="375" height="667"></canvas>
+		</div>
+	</div>
+	
+	<div class="scene scene1" id="scene1">
 		<canvas id="snowCanvas"></canvas>
 		<div class="content">
 			<canvas id="scene1canvas" width="258" height="383"></canvas>
@@ -237,6 +321,7 @@ $$$$$$$$$$$$$$$$$&@                &$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 	
 <script type="text/javascript" src="./src/js/jquery.js"></script>	
 <script type="text/javascript" src="./src/js/createjs-2015.11.26.min.js"></script>
+<script type="text/javascript" src="./src/js/tweenjs/CSSPlugin.js"></script>
 <script>
 
 var htmlWidth = $('html').width();
@@ -246,8 +331,64 @@ $('html').css({
 	'font-size': htmlWidth / designWidth * 100 + 'px'
 });
 
+
+var startTime = new Date().getTime();
+function preloading(isShowPre){
+	createjs.CSSPlugin.install(createjs.Tween);
+	
+	if(isShowPre){
+		
+		var t1 = document.getElementById("t1");
+		createjs.Tween.get(t1, {loop: false})
+			.set({opacity: "1"}, t1.style)
+			.wait(2000)
+			.set({opacity: "0"}, t1.style)
+			
+		var t2 = document.getElementById("t2");
+		createjs.Tween.get(t2, {loop: false})
+			.wait(4000)
+			.set({opacity: "1"}, t2.style)
+			.wait(2000)
+			.set({opacity: "0"}, t2.style)
+			
+		var t3 = document.getElementById("t3");
+		createjs.Tween.get(t3, {loop: false})
+			.wait(8000)
+			.set({opacity: "1"}, t3.style)
+			.wait(2000)
+			.set({opacity: "0"}, t3.style)
+			
+		var t4 = document.getElementById("t4");
+		createjs.Tween.get(t4, {loop: false})
+			.wait(12000)
+			.set({opacity: "1"}, t4.style)
+			.wait(2000)
+			.set({opacity: "0"}, t4.style)
+		
+		var mainView = document.getElementById("mainView");
+		createjs.Tween.get(mainView, {loop: false})
+			.wait(16000)
+			.set({opacity: "1"}, mainView.style);
+		
+	}else{
+		
+		var mainView = document.getElementById("mainView");
+		createjs.Tween.get(mainView, {loop: false})
+			.wait(1000)
+			.set({opacity: "1"}, mainView.style);
+		
+	}
+	createjs.Ticker.setFPS(10);
+	
+	//加载资源
+	loadResource();
+	
+}
+preloading(true);
+
+//加载资源
 var loader;
-var preLoadRes = function(){
+function loadResource(){
 	loader = new createjs.LoadQueue();
 	loader.installPlugin(createjs.Sound);
 	loader.on("fileload", handleFileComplete);
@@ -268,24 +409,34 @@ var preLoadRes = function(){
 		
 	];
 	loader.loadManifest(manifest);
+}
+function handleFileComplete(evt){
 	
 }
-var handleFileComplete = function(evt){
+//加载完成事件
+function handleAllComplete(){
 	
-}
-
-var handleAllComplete = function(){
+	//播放音乐
 	createjs.Sound.play("bgm");
-	app.initScene1();
-	//隐藏加载效果
-	$("#loadingWrap").fadeOut(400);
+	
+	var endTime = new Date().getTime();
+	//$("#loadingWrap").fadeOut(400);
+	$("#mainView").addClass("show");
+	
+	//初始化界面
+	initMainView();
+	
 }
 
-var handleProgress = function(evt){
-	$("#loadingWrap span").text(Math.floor(evt.loaded*100) + "%");
+function handleProgress(evt){
+	$("#bottomScreen p").text(Math.floor(evt.loaded*100) + "%");
+	//$("#loadingWrap span").text(Math.floor(evt.loaded*100) + "%");
 }
 
-preLoadRes();
+//初始化界面
+function initMainView = function(){
+	
+}
 
 </script>
 <script type="text/javascript" src="./dist/spring.js"></script>
