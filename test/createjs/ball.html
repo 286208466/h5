@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<link rel="stylesheet" type="text/css" href="../../src/css/common.css"/>
+<title></title>
+<style>
+body {
+	background: #f1f1f1;
+}
+canvas {
+	border: 1px solid #f40;
+	background: #fff;
+}
+</style>
+
+</head>
+<body>
+
+	<canvas id="demo" width="500" height="500"></canvas>
+	
+	
+<script type="text/javascript" src="../../src/js/jquery.js"></script>	
+<script type="text/javascript" src="../../src/js/createjs-2015.11.26.min.js"></script>
+<script>
+
+var stage = new createjs.Stage("demo");
+
+var ball = new createjs.Shape();
+
+ball.addEventListener("click", handleClick);
+
+ball.graphics.beginFill("#000000").drawCircle(0, 0, 50);
+ball.x = 50;
+ball.y = 200;
+
+createjs.Tween.get(ball, {loop: true})
+	.to({x: 450}, 3000)
+	.to({x: 50}, 3000)
+	
+createjs.Ticker.addEventListener("tick", tick);
+
+stage.addChild(ball);
+
+function handleClick(event){
+	alert("clicked")
+}
+function tick(event){
+	stage.update();
+}
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

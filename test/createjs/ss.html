@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<link rel="stylesheet" type="text/css" href="../../src/css/common.css"/>
+<title></title>
+<style>
+body {
+	background: #f1f1f1;
+}
+canvas {
+	border: 1px solid #f40;
+	background: #fff;
+}
+</style>
+
+</head>
+<body>
+
+	<canvas id="demo" width="375" height="667"></canvas>
+	
+	
+<script type="text/javascript" src="../../src/js/jquery.js"></script>	
+<script type="text/javascript" src="../../src/js/createjs-2015.11.26.min.js"></script>
+<script>
+
+var stage = new createjs.Stage("demo");
+
+var shape = new createjs.Shape();
+
+var hero;
+
+var img = new Image;
+img.src = "./ss.png";
+img.onload = function(){
+	var spriteSheet = new createjs.SpriteSheet({
+		framerate: 30,
+		"images": ["./ss.png"],
+		"frames": {"regX": 82, "height": 292, "count": 64, "regY": 0, "width": 165},
+		// define two animations, run (loops, 1.5x speed) and jump (returns to run):
+		"animations": {
+			"run": [0, 25, "run", 1.5],
+			"jump": [26, 63, "run"]
+		}
+	});
+	
+	hero = new createjs.Sprite(spriteSheet);
+	hero.x = 150;
+	
+	stage.addChild(hero);
+	stage.update();
+	
+	createjs.Ticker.setFPS(30);
+	createjs.Ticker.addEventListener("tick", tick);
+	
+	hero.gotoAndPlay("run");
+	
+	stage.addEventListener("click", handleclick)
+	
+}
+
+function tick(){
+	stage.update();
+}
+
+function handleclick(){
+	hero.gotoAndPlay("jump");
+	stage.update();
+}
+</script>
+</body>
+</html>

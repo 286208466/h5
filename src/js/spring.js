@@ -80,7 +80,7 @@ function loadResource(){
 	loader.on("progress", handleProgress);
 	loader.on("complete", handleAllComplete);
 	loader.loadFile({id: "bgm", src: "./src/file/bgm.mp3"});
-	loader.loadFile({id: "video", src: "./src/file/video.mp4"});
+	//loader.loadFile({id: "video", src: "./src/file/video.mp4"});
 	var manifest = [
 		{id: "mainCanvasBg", src: "./src/img/spring/mainCanvasBg.jpg"}
 		,{id: "scene1Ticket", src: "./src/img/spring/scene1Ticket.png"}
