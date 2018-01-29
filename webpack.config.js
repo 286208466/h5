@@ -61,7 +61,7 @@ module.exports = {
                 algorithm: 'top-down'
             }
         })
-		,new uglifyJsPlugin({
+		/*,new uglifyJsPlugin({
 			uglifyOptions: {
 				ie8: true,
 				comments: false,
@@ -70,7 +70,7 @@ module.exports = {
 				},
 				warnings: false
 		    }
-	    })
+	    })*/
 		/*,new webpack.optimize.CommonsChunkPlugin({
 		    name: 'jquery',
 		    filename: 'common.bundle.js',

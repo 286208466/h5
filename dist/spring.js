@@ -1,1 +1,532 @@
-!function(e){function t(a){if(n[a])return n[a].exports;var i=n[a]={i:a,l:!1,exports:{}};return e[a].call(i.exports,i,i.exports,t),i.l=!0,i.exports}var n={};t.m=e,t.c=n,t.d=function(e,n,a){t.o(e,n)||Object.defineProperty(e,n,{configurable:!1,enumerable:!0,get:a})},t.n=function(e){var n=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(n,"a",n),n},t.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},t.p="",t(t.s=0)}([function(e,t){function n(){u=new createjs.LoadQueue,u.installPlugin(createjs.Sound),u.on("fileload",a),u.on("progress",s),u.on("complete",i),u.loadFile({id:"bgm",src:"./src/file/bgm.mp3"}),u.loadFile({id:"video",src:"./src/file/video.mp4"});var e=[{id:"mainCanvasBg",src:"./src/img/spring/mainCanvasBg.jpg"},{id:"scene1Ticket",src:"./src/img/spring/scene1Ticket.png"},{id:"bgTicket",src:"./src/img/spring/bg-ticket.png"},{id:"tickets_success",src:"./src/img/spring/tickets_success.png"},{id:"tickets_failure",src:"./src/img/spring/tickets_failure.png"}];u.loadManifest(e)}function a(e){}function i(){if(createjs.Sound.play("bgm"),l){var e=(new Date).getTime();console.log(e-d),e-d<18e3?setTimeout(function(){$("#mainView").addClass("show"),$("#bgAudioBtn").css("z-index","1000")},18e3-e+d):($("#mainView").addClass("show"),$("#bgAudioBtn").css("z-index","1000"))}else $("#mainView").addClass("show"),$("#bgAudioBtn").css("z-index","1000");o()}function s(e){$("#bottomScreen p").text(Math.floor(100*e.loaded)+"%")}function o(){g=document.getElementById("mainCanvas"),g.width=2*v,g.height=2*y,$("#mainCanvas").css({width:v,height:y}),p=new createjs.Stage(g);var e=new createjs.Container;m=new createjs.Bitmap(u.getResult("mainCanvasBg"));var t=2*y/1334;m.scaleX=m.scaleY=t,e.addChild(m),p.addChild(e),h=new createjs.Bitmap(u.getResult("scene1Ticket")),h.x=v-h.image.width/2,h.y=100,p.addChild(h);var n=new createjs.Bitmap(u.getResult("bgTicket"));n.x=v-n.image.width/2,n.y=200,p.addChild(n),p.update()}function r(){B.src="./src/file/zbg.mp4",B.play()}var c=$("html").width();$("html").css({"font-size":c/750*100+"px"});var d,l=!0;isPC()?$("body").html("<h2>请使用手机浏览</h2>"):function(e){if(createjs.CSSPlugin.install(createjs.Tween),d=(new Date).getTime(),e){var t=document.getElementById("t1");createjs.Tween.get(t,{loop:!1}).set({opacity:"1"},t.style).wait(2e3).set({opacity:"0"},t.style);var a=document.getElementById("t2");createjs.Tween.get(a,{loop:!1}).wait(4e3).set({opacity:"1"},a.style).wait(2e3).set({opacity:"0"},a.style);var i=document.getElementById("t3");createjs.Tween.get(i,{loop:!1}).wait(8e3).set({opacity:"1"},i.style).wait(2e3).set({opacity:"0"},i.style);var s=document.getElementById("t4");createjs.Tween.get(s,{loop:!1}).wait(12e3).set({opacity:"1"},s.style).wait(2e3).set({opacity:"0"},s.style);var o=document.getElementById("mainView");createjs.Tween.get(o,{loop:!1}).wait(16e3).set({opacity:"1"},o.style)}else{var o=document.getElementById("mainView");createjs.Tween.get(o,{loop:!1}).wait(1e3).set({opacity:"1"},o.style)}createjs.Ticker.setFPS(10),n()}(l);var u,g,p,m,h,w,f,f,v=window.innerWidth,y=window.innerHeight;$("#ticketBtn a").on("touchstart",function(){$("#goBtn").siblings().addClass("hide");var e=2*Math.random()>1,t="tickets_failure";e=!0,e&&(t="tickets_success"),f=new createjs.SpriteSheet({framerate:9,images:[u.getResult(t)],frames:{regX:0,height:389,count:12,regY:0,width:606},animations:{run:[0,11]}}),w=new createjs.Sprite(f,"run"),w.x=v-303,w.y=360,p.addChild(w),createjs.Ticker.addEventListener("tick",p),setTimeout(function(){w.stop(),p.update(),e?($("#goBtn a[data-target='success']").removeClass("hide"),$("#goBtn a[data-target='failure']").addClass("hide")):($("#goBtn a[data-target='failure']").removeClass("hide"),$("#goBtn a[data-target='success']").addClass("hide"))},1400)}),$("#goBtn .go1").on("touchstart",function(){$("#preloadWrap").addClass("toleft"),$("#scene2").addClass("cur"),r()}),$("#goBtn .go2").on("touchstart",function(){p.removeChild(w),$("#ticketBtn a").trigger("touchstart")}),$("#goBtn .go3").on("touchstart",function(){$("#preloadWrap").addClass("toleft"),$("#scene3").addClass("cur"),app.initScene3()});var B=document.getElementById("video");B.onended=function(){$("#scene2").addClass("isHide").removeClass("cur"),$("#scene3").addClass("cur")},$("#bgAudioBtn").on("touchstart",function(){var e=$(this);e.toggleClass("on");document.getElementById("bgm");e.hasClass("on")?createjs.Sound.play("bgm"):createjs.Sound.stop("bgm")}),window.app=window.app||{};app.initScene2=function(){document.getElementById("scene2video").play()},app.initScene3=function(){var e=[["鞭炮声震除夕夜","万家灯火思语时"],["瑞狗衔财报新春","金蝉吐运福如海"]],t=C(e);$("#words ul").html(t)};var C=function(e){for(var t="",n=0;n<e.length;n++)t+="<li>"+e[n][0]+",</li>",t+="<li>"+e[n][1]+"。</li>";return t};$(".showInputBtn").on("touchstart",function(){$("#inputDialog input").val(""),$("#inputDialog").addClass("show")}),$("#makeBtn").on("touchstart",function(){var e=$.trim($("#inputDialog input").val());$("#remakeBtn").data("text",e);var t="http://192.168.32.78:9001/poem?start_words="+e;$("#inputDialog").removeClass("show"),$(".showInputBtn").hide(),$(".btnGroupWrap").show(),$.ajax({url:t,type:"get",dataType:"jsonp",success:function(e){if(e.poem.length>0){var t=C(e.poem);$("#words ul").html(t)}}})}),$("#remakeBtn").on("touchstart",function(){$("#makeBtn").trigger("touchstart")}),$("#reinputBtn").on("touchstart",function(){$(".showInputBtn").trigger("touchstart")}),$("#getImgBtn").on("click",function(){$("#previewWrap").addClass("show"),$("#previewWrap img").attr("src","./src/img/spring/bg-ticket.png")}),$("#previewWrap").on("click",function(){$(this).removeClass("show")})}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports) {
+
+var htmlWidth = $('html').width();
+var designWidth = 750;
+var designHeight = 1334;
+
+$('html').css({
+	'font-size': htmlWidth / designWidth * 100 + 'px'
+});
+
+//开始加载的事件
+var startTime;
+//是否显示预加载
+var isShowPre = false;
+function preloading(isShowPre){
+	
+	createjs.CSSPlugin.install(createjs.Tween);
+	startTime = new Date().getTime();
+	
+	if(isShowPre){
+		
+		var t1 = document.getElementById("t1");
+		createjs.Tween.get(t1, {loop: false})
+			.wait(2000)
+			.set({opacity: "1"}, t1.style)
+			.wait(2000)
+			.set({opacity: "0"}, t1.style)
+			
+		var t2 = document.getElementById("t2");
+		createjs.Tween.get(t2, {loop: false})
+			.wait(6000)
+			.set({opacity: "1"}, t2.style)
+			.wait(2000)
+			.set({opacity: "0"}, t2.style)
+			
+		var t3 = document.getElementById("t3");
+		createjs.Tween.get(t3, {loop: false})
+			.wait(10000)
+			.set({opacity: "1"}, t3.style)
+			.wait(2000)
+			.set({opacity: "0"}, t3.style)
+			
+		var t4 = document.getElementById("t4");
+		createjs.Tween.get(t4, {loop: false})
+			.wait(14000)
+			.set({opacity: "1"}, t4.style)
+			.wait(2000)
+			.set({opacity: "0"}, t4.style)
+		
+		var mainView = document.getElementById("mainView");
+		createjs.Tween.get(mainView, {loop: false})
+			.wait(18000)
+			.set({opacity: "1"}, mainView.style);
+		
+	}else{
+		
+		var mainView = document.getElementById("mainView");
+		createjs.Tween.get(mainView, {loop: false})
+			.wait(1000)
+			.set({opacity: "1"}, mainView.style);
+		
+	}
+	createjs.Ticker.setFPS(10);
+	
+	//加载资源
+	loadResource();
+	
+}
+
+if(isPC()){
+	$("body").html("<h2>请使用手机浏览</h2>");
+}else{
+	preloading(isShowPre);
+}
+
+
+//加载资源
+var loader;
+function loadResource(){
+	loader = new createjs.LoadQueue();
+	loader.installPlugin(createjs.Sound);
+	loader.on("fileload", handleFileComplete);
+	loader.on("progress", handleProgress);
+	loader.on("complete", handleAllComplete);
+	//loader.loadFile({id: "bgm", src: "./src/file/bgm.mp3"});
+	loader.loadFile({id: "video", src: "./src/file/zbg.mp4"});
+	var manifest = [
+		{id: "mainCanvasBg", src: "./src/img/spring/mainCanvasBg.jpg"}
+		,{id: "scene1Ticket", src: "./src/img/spring/scene1Ticket.png"}
+		,{id: "scene1BgTicket", src: "./src/img/spring/scene1BgTicket.png"}
+		,{id: "scene1Btn", src: "./src/img/spring/scene1Btn.png"}
+		,{id: "ticketsSuccess", src: "./src/img/spring/ticketsSuccess.png"}
+		,{id: "ticketsFailure", src: "./src/img/spring/ticketsFailure.png"}
+		
+	];
+	loader.loadManifest(manifest);
+}
+function handleFileComplete(evt){
+	
+}
+//加载完成事件
+function handleAllComplete(){
+	
+	//播放音乐
+	//createjs.Sound.play("bgm");
+	
+	//隐藏加载
+	if(isShowPre){
+		var endTime = new Date().getTime();
+		if(endTime - startTime < 20000){
+			setTimeout(function(){
+				$("#mainView").addClass("show");
+				//$("#bgAudioBtn").css("z-index", "1000");
+			}, (20000 - endTime + startTime))
+		}else{
+			$("#mainView").addClass("show");
+			//$("#bgAudioBtn").css("z-index", "1000");
+		}
+		
+	}else{
+		setTimeout(function(){
+			$("#mainView").addClass("show");
+		}, 2000)
+		//$("#bgAudioBtn").css("z-index", "1000");
+	}
+	
+	//初始化界面
+	initMainView();
+	
+}
+
+function handleProgress(evt){
+	$("#bottomScreen p").text(Math.floor(evt.loaded*100) + "%");
+}
+
+//初始化界面
+var windowWidth = window.innerWidth;
+var windowHeight = window.innerHeight;
+var mainCanvas;
+var mainstage;
+var mainCanvasBg;
+
+//场景1
+var scene1bg;
+var scene1grant;
+var scene1SpriteSheet;
+var scene1Ticket;
+var scene1bgContainer;
+var scene1TicketContainer;
+//抢票成功几率50%
+var isSuccess = Math.random()*2 > 1;
+var imgFlag = "ticketsFailure";
+isSuccess = false;
+
+function initMainView(){
+	
+	//解决图片模糊问题
+	mainCanvas = document.getElementById("mainCanvas");
+	mainCanvas.width = windowWidth*2;
+	mainCanvas.height = windowHeight*2;
+	$("#mainCanvas").css({"width":windowWidth, "height": windowHeight});
+	
+	//创建舞台 
+	mainstage = new createjs.Stage(mainCanvas);
+	
+	//渲染背景图片
+	mainCanvasBg = new createjs.Bitmap(loader.getResult("mainCanvasBg"));
+	var scale = (2*windowHeight)/1334;
+	mainCanvasBg.scaleX = mainCanvasBg.scaleY = scale;
+	mainstage.addChild(mainCanvasBg);
+	
+	//出票机器
+	scene1bg = new createjs.Bitmap(loader.getResult("scene1Ticket"));
+	
+	scene1bgContainer = new createjs.Container();
+	scene1bgContainer.width = scene1bg.image.width;
+	scene1bgContainer.height = scene1bg.image.height;
+	scene1bgContainer.x = windowWidth - scene1bg.image.width/2;
+	scene1bgContainer.y = 122*2*windowHeight/designHeight;
+	
+	scene1bg.x = 0;
+	scene1bg.y = 0;
+	scene1bgContainer.addChild(scene1bg);
+	
+	scene1Ticket = new createjs.Bitmap(loader.getResult("scene1BgTicket"));
+	scene1Ticket.x = (scene1bgContainer.width - scene1Ticket.image.width)/2;;
+	scene1Ticket.y = 100;
+	scene1bgContainer.addChild(scene1Ticket);
+	
+	mainstage.addChild(scene1bgContainer);
+	
+	if(isSuccess){
+		imgFlag = "ticketsSuccess";
+	}
+	//出票动画
+	scene1SpriteSheet = new createjs.SpriteSheet({
+		//帧率
+		framerate: 9,
+		//图片地址
+		"images": [loader.getResult(imgFlag)],
+		"frames": {"regX": 0, "height": 389, "count": 12, "regY": 0, "width": 606},
+		"animations": {
+			"run": [0, 11],
+			"startRun": [0]
+		},
+		"complete": true
+	});
+	scene1grant = new createjs.Sprite(scene1SpriteSheet);
+	scene1grant.x = windowWidth - 606/2;
+	scene1grant.y = scene1bgContainer.y + 280;
+	scene1grant.alpha = 0;
+	mainstage.addChild(scene1grant);
+	
+	
+	mainstage.update();
+	
+}
+
+//按钮点击事件
+$("#ticketBtn a").on("touchstart", function(){
+	
+	$("#goBtn").siblings().addClass("hide");
+	
+	createjs.Ticker.setFPS(8);
+	createjs.Ticker.addEventListener("tick", tick);
+	
+	scene1grant.alpha = 1;
+	scene1grant.gotoAndPlay("run");
+	
+	setTimeout(function(){
+		scene1grant.stop();
+		mainstage.update();
+		if(isSuccess){
+			$("#goBtn a[data-target='success']").removeClass("hide");
+			$("#goBtn a[data-target='failure']").addClass("hide");
+		}else{
+			$("#goBtn a[data-target='failure']").removeClass("hide");
+			$("#goBtn a[data-target='success']").addClass("hide");
+		}
+		
+	}, (12)/8*1000);
+	
+});
+
+function tick(){
+	mainstage.update();
+}
+
+//回家
+$("#goBtn .go1").on("touchstart", function(){
+	$("#preloadWrap").addClass("toleft");
+	$("#scene2").addClass("cur");
+	playVideo();
+});
+
+//继续抢
+$("#goBtn .go2").on("touchstart", function(){
+	scene1grant.gotoAndPlay("startRun");
+	scene1grant.gotoAndPlay("run");
+	//$("#ticketBtn a").trigger("touchstart");
+});
+
+//不抢了
+$("#goBtn .go3").on("touchstart", function(){
+	$("#preloadWrap").addClass("toleft");
+	$("#scene3").addClass("cur");
+	initScene3();
+});
+
+//播放视频
+var video = document.getElementById("video");
+function playVideo(){
+	video.src = loader.getItem("video").src;
+	video.play();
+}
+
+video.onended = function(){
+	$("#scene2").addClass("isHide").removeClass("cur");
+	$("#scene3").addClass("cur");
+	initScene3();
+};
+
+//声音按钮事件
+/*$("#bgAudioBtn").on("touchstart", function(){
+	var $this = $(this);
+	$this.toggleClass("on");
+	var audio = document.getElementById("bgm");
+	if($this.hasClass("on")){
+		createjs.Sound.play("bgm");
+	}else{
+		createjs.Sound.stop("bgm");
+	}
+});
+*/
+
+//场景3
+function initScene3(){
+	var words = [
+		"鞭炮声震除夕夜", 
+		"万家灯火思语时",
+		"瑞狗衔财报新春", 
+		"金蝉吐运福如海"
+	];
+	var html = createWords(words);
+	$("#words ul").html(html);
+}
+var createWords = function(words){
+	var html = '';
+	for(var i = 0; i < words.length; i++){
+		html += '<li>' + words[i] + '</li>';
+	}
+	return html;
+}
+$(".showInputBtn").on("touchstart", function(){
+	$("#inputDialog input").val("");
+	$("#inputDialog").addClass("show");
+})
+
+//生成
+window.poem = "";
+$("#makeBtn").on("touchstart", function(){
+	var text = $.trim($("#inputDialog input").val());
+	if(text == ""){
+		text = "新年大吉大利";
+	}
+	if(text.length > 8){
+		alert("不能超过8个字哦");
+		return;
+	}else if(!/^[\u4e00-\u9fa5]{1,8}$/i.test(text)){
+		alert("只支持汉字作诗");
+		return;
+	}
+	$("#remakeBtn").data("text", text);
+	var url = "http://192.168.32.78:9001/poem?start_words=" + text;
+	$("#inputDialog").removeClass("show");
+	
+	$(".showInputBtn").hide();
+	$(".btnGroupWrap").show();
+	
+	$.ajax({
+		url: url,
+		type: "get",
+		dataType: "jsonp",
+		success: function(data){
+			if(data.code == 0){
+				window.poem = data.poem;
+				if(data.poem.length > 0){
+					var html = createWords(data.poem);
+					$("#words ul").html(html);
+				}
+			}
+			
+		}
+	})
+})
+
+//重新生成
+$("#remakeBtn").on("touchstart", function(){
+	$("#makeBtn").trigger("touchstart");
+})
+
+
+//继续做诗
+$("#reinputBtn").on("touchstart", function(){
+	$(".showInputBtn").trigger("touchstart");
+})
+
+//生成图片
+$("#getImgBtn").on("click", function(){
+	var arr = [];
+	for(var k in window.poem){
+		arr.push("poem[]=" + window.poem[k]);
+	}
+	$.ajax({
+		url: "http://192.168.32.78:9001/sharegen?" + arr.join("&"),
+		type: "get",
+		dataType: "jsonp",
+		success: function(data){
+			if(data.code == 0){
+				$("#previewWrap").addClass("show");
+				$("#previewWrap img").attr("src", data.url);
+			}
+			
+		}
+	})
+	
+})
+
+$("#previewWrap").on("click", function(){
+	$(this).removeClass("show");
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+window.app = window.app || {};
+
+//场景2
+var scene2canvas;
+var scene2stage;
+var scene2bg;
+
+app.initScene2 = function(){
+	var video = document.getElementById("scene2video");
+	//video.src = loader.getItem("video").src;
+	video.play();
+	
+	/*scene2canvas = document.getElementById("scene2canvas");
+	
+	//创建舞台 
+	scene2stage = new createjs.Stage(scene2canvas);
+	//scene2stage.autoClear = true;
+	
+	//渲染背景图片
+	var container = new createjs.Container();
+	scene2bg = new createjs.Bitmap(loader.getResult("scene2bg"));
+	var scale = (2*windowHeight)/1334;
+	scene2bg.scaleX = scene2bg.scaleY = scale;
+	container.addChild(scene2bg);
+	
+	scene2bg.alpha = 1; 
+	
+	scene2stage.addChild(container);
+	scene2stage.update();
+	
+	createjs.Tween.get(scene2stage).to({x:(windowWidth*2 - scene2bg.image.width*scale)}, 20000, createjs.Ease.linear);
+	
+	createjs.Ticker.setFPS(30);  
+	createjs.Ticker.addEventListener("tick", scene2stage);  */
+	
+}
+function scene2Tick(event){
+	
+	var deltaS = event.delta / 1000;
+	scene2bg.x = scene2bg.x - deltaS * 45;
+	scene2stage.update();
+	
+}
+
+
+
+/***/ })
+/******/ ]);

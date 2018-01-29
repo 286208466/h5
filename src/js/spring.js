@@ -1,15 +1,15 @@
 var htmlWidth = $('html').width();
 var designWidth = 750;
+var designHeight = 1334;
 
 $('html').css({
 	'font-size': htmlWidth / designWidth * 100 + 'px'
 });
 
-
 //开始加载的事件
 var startTime;
 //是否显示预加载
-var isShowPre = true;
+var isShowPre = false;
 function preloading(isShowPre){
 	
 	createjs.CSSPlugin.install(createjs.Tween);
@@ -19,34 +19,35 @@ function preloading(isShowPre){
 		
 		var t1 = document.getElementById("t1");
 		createjs.Tween.get(t1, {loop: false})
+			.wait(2000)
 			.set({opacity: "1"}, t1.style)
 			.wait(2000)
 			.set({opacity: "0"}, t1.style)
 			
 		var t2 = document.getElementById("t2");
 		createjs.Tween.get(t2, {loop: false})
-			.wait(4000)
+			.wait(6000)
 			.set({opacity: "1"}, t2.style)
 			.wait(2000)
 			.set({opacity: "0"}, t2.style)
 			
 		var t3 = document.getElementById("t3");
 		createjs.Tween.get(t3, {loop: false})
-			.wait(8000)
+			.wait(10000)
 			.set({opacity: "1"}, t3.style)
 			.wait(2000)
 			.set({opacity: "0"}, t3.style)
 			
 		var t4 = document.getElementById("t4");
 		createjs.Tween.get(t4, {loop: false})
-			.wait(12000)
+			.wait(14000)
 			.set({opacity: "1"}, t4.style)
 			.wait(2000)
 			.set({opacity: "0"}, t4.style)
 		
 		var mainView = document.getElementById("mainView");
 		createjs.Tween.get(mainView, {loop: false})
-			.wait(16000)
+			.wait(18000)
 			.set({opacity: "1"}, mainView.style);
 		
 	}else{
@@ -79,14 +80,15 @@ function loadResource(){
 	loader.on("fileload", handleFileComplete);
 	loader.on("progress", handleProgress);
 	loader.on("complete", handleAllComplete);
-	loader.loadFile({id: "bgm", src: "./src/file/bgm.mp3"});
-	//loader.loadFile({id: "video", src: "./src/file/video.mp4"});
+	//loader.loadFile({id: "bgm", src: "./src/file/bgm.mp3"});
+	loader.loadFile({id: "video", src: "./src/file/zbg.mp4"});
 	var manifest = [
 		{id: "mainCanvasBg", src: "./src/img/spring/mainCanvasBg.jpg"}
 		,{id: "scene1Ticket", src: "./src/img/spring/scene1Ticket.png"}
-		,{id: "bgTicket", src: "./src/img/spring/bg-ticket.png"}
-		,{id: "tickets_success", src: "./src/img/spring/tickets_success.png"}
-		,{id: "tickets_failure", src: "./src/img/spring/tickets_failure.png"}
+		,{id: "scene1BgTicket", src: "./src/img/spring/scene1BgTicket.png"}
+		,{id: "scene1Btn", src: "./src/img/spring/scene1Btn.png"}
+		,{id: "ticketsSuccess", src: "./src/img/spring/ticketsSuccess.png"}
+		,{id: "ticketsFailure", src: "./src/img/spring/ticketsFailure.png"}
 		
 	];
 	loader.loadManifest(manifest);
@@ -98,29 +100,27 @@ function handleFileComplete(evt){
 function handleAllComplete(){
 	
 	//播放音乐
-	createjs.Sound.play("bgm");
+	//createjs.Sound.play("bgm");
 	
 	//隐藏加载
 	if(isShowPre){
 		var endTime = new Date().getTime();
-		console.log(endTime - startTime);
-		if(endTime - startTime < 18000){
+		if(endTime - startTime < 20000){
 			setTimeout(function(){
 				$("#mainView").addClass("show");
-				$("#bgAudioBtn").css("z-index", "1000");
-			}, (18000 - endTime + startTime))
+				//$("#bgAudioBtn").css("z-index", "1000");
+			}, (20000 - endTime + startTime))
 		}else{
 			$("#mainView").addClass("show");
-			$("#bgAudioBtn").css("z-index", "1000");
+			//$("#bgAudioBtn").css("z-index", "1000");
 		}
 		
 	}else{
-		$("#mainView").addClass("show");
-		$("#bgAudioBtn").css("z-index", "1000");
+		setTimeout(function(){
+			$("#mainView").addClass("show");
+		}, 2000)
+		//$("#bgAudioBtn").css("z-index", "1000");
 	}
-	
-	
-	
 	
 	//初始化界面
 	initMainView();
@@ -142,7 +142,13 @@ var mainCanvasBg;
 var scene1bg;
 var scene1grant;
 var scene1SpriteSheet;
-var scene1SpriteSheet;
+var scene1Ticket;
+var scene1bgContainer;
+var scene1TicketContainer;
+//抢票成功几率50%
+var isSuccess = Math.random()*2 > 1;
+var imgFlag = "ticketsFailure";
+isSuccess = false;
 
 function initMainView(){
 	
@@ -156,41 +162,33 @@ function initMainView(){
 	mainstage = new createjs.Stage(mainCanvas);
 	
 	//渲染背景图片
-	var container = new createjs.Container();
 	mainCanvasBg = new createjs.Bitmap(loader.getResult("mainCanvasBg"));
 	var scale = (2*windowHeight)/1334;
 	mainCanvasBg.scaleX = mainCanvasBg.scaleY = scale;
-	container.addChild(mainCanvasBg);
-	
-	mainstage.addChild(container);
+	mainstage.addChild(mainCanvasBg);
 	
 	//出票机器
 	scene1bg = new createjs.Bitmap(loader.getResult("scene1Ticket"));
-	scene1bg.x = windowWidth - scene1bg.image.width/2;
-	scene1bg.y = 100;
-	mainstage.addChild(scene1bg);
 	
-	//票
-	var ticket = new createjs.Bitmap(loader.getResult("bgTicket"));
-	ticket.x = windowWidth - ticket.image.width/2;
-	ticket.y = 200;
-	mainstage.addChild(ticket);
+	scene1bgContainer = new createjs.Container();
+	scene1bgContainer.width = scene1bg.image.width;
+	scene1bgContainer.height = scene1bg.image.height;
+	scene1bgContainer.x = windowWidth - scene1bg.image.width/2;
+	scene1bgContainer.y = 122*2*windowHeight/designHeight;
 	
-	mainstage.update();
+	scene1bg.x = 0;
+	scene1bg.y = 0;
+	scene1bgContainer.addChild(scene1bg);
 	
-}
-
-//按钮点击事件
-$("#ticketBtn a").on("touchstart", function(){
+	scene1Ticket = new createjs.Bitmap(loader.getResult("scene1BgTicket"));
+	scene1Ticket.x = (scene1bgContainer.width - scene1Ticket.image.width)/2;;
+	scene1Ticket.y = 100;
+	scene1bgContainer.addChild(scene1Ticket);
 	
-	$("#goBtn").siblings().addClass("hide");
-	//抢票成功几率50%
-	var isSuccess = Math.random()*2 > 1;
-	var imgFlag = "tickets_failure";
-	isSuccess = true;
+	mainstage.addChild(scene1bgContainer);
+	
 	if(isSuccess){
-		imgFlag = "tickets_success";
-		//成功
+		imgFlag = "ticketsSuccess";
 	}
 	//出票动画
 	scene1SpriteSheet = new createjs.SpriteSheet({
@@ -201,14 +199,32 @@ $("#ticketBtn a").on("touchstart", function(){
 		"frames": {"regX": 0, "height": 389, "count": 12, "regY": 0, "width": 606},
 		"animations": {
 			"run": [0, 11],
-		}
+			"startRun": [0]
+		},
+		"complete": true
 	});
-	scene1grant = new createjs.Sprite(scene1SpriteSheet, "run");
+	scene1grant = new createjs.Sprite(scene1SpriteSheet);
 	scene1grant.x = windowWidth - 606/2;
-	scene1grant.y = 360;
-
+	scene1grant.y = scene1bgContainer.y + 280;
+	scene1grant.alpha = 0;
 	mainstage.addChild(scene1grant);
-	createjs.Ticker.addEventListener("tick", mainstage);
+	
+	
+	mainstage.update();
+	
+}
+
+//按钮点击事件
+$("#ticketBtn a").on("touchstart", function(){
+	
+	$("#goBtn").siblings().addClass("hide");
+	
+	createjs.Ticker.setFPS(8);
+	createjs.Ticker.addEventListener("tick", tick);
+	
+	scene1grant.alpha = 1;
+	scene1grant.gotoAndPlay("run");
+	
 	setTimeout(function(){
 		scene1grant.stop();
 		mainstage.update();
@@ -220,9 +236,13 @@ $("#ticketBtn a").on("touchstart", function(){
 			$("#goBtn a[data-target='success']").addClass("hide");
 		}
 		
-	}, 1400);
+	}, (12)/8*1000);
 	
 });
+
+function tick(){
+	mainstage.update();
+}
 
 //回家
 $("#goBtn .go1").on("touchstart", function(){
@@ -233,49 +253,33 @@ $("#goBtn .go1").on("touchstart", function(){
 
 //继续抢
 $("#goBtn .go2").on("touchstart", function(){
-	mainstage.removeChild(scene1grant);
-	$("#ticketBtn a").trigger("touchstart");
+	scene1grant.gotoAndPlay("startRun");
+	scene1grant.gotoAndPlay("run");
+	//$("#ticketBtn a").trigger("touchstart");
 });
 
 //不抢了
 $("#goBtn .go3").on("touchstart", function(){
 	$("#preloadWrap").addClass("toleft");
 	$("#scene3").addClass("cur");
-	app.initScene3();
+	initScene3();
 });
 
 //播放视频
 var video = document.getElementById("video");
 function playVideo(){
-	video.src = "./src/file/zbg.mp4";
+	video.src = loader.getItem("video").src;
 	video.play();
 }
 
 video.onended = function(){
 	$("#scene2").addClass("isHide").removeClass("cur");
 	$("#scene3").addClass("cur");
+	initScene3();
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-$("#bgAudioBtn").on("touchstart", function(){
+//声音按钮事件
+/*$("#bgAudioBtn").on("touchstart", function(){
 	var $this = $(this);
 	$this.toggleClass("on");
 	var audio = document.getElementById("bgm");
@@ -285,6 +289,119 @@ $("#bgAudioBtn").on("touchstart", function(){
 		createjs.Sound.stop("bgm");
 	}
 });
+*/
+
+//场景3
+function initScene3(){
+	var words = [
+		"鞭炮声震除夕夜", 
+		"万家灯火思语时",
+		"瑞狗衔财报新春", 
+		"金蝉吐运福如海"
+	];
+	var html = createWords(words);
+	$("#words ul").html(html);
+}
+var createWords = function(words){
+	var html = '';
+	for(var i = 0; i < words.length; i++){
+		html += '<li>' + words[i] + '</li>';
+	}
+	return html;
+}
+$(".showInputBtn").on("touchstart", function(){
+	$("#inputDialog input").val("");
+	$("#inputDialog").addClass("show");
+})
+
+//生成
+window.poem = "";
+$("#makeBtn").on("touchstart", function(){
+	var text = $.trim($("#inputDialog input").val());
+	if(text == ""){
+		text = "新年大吉大利";
+	}
+	if(text.length > 8){
+		alert("不能超过8个字哦");
+		return;
+	}else if(!/^[\u4e00-\u9fa5]{1,8}$/i.test(text)){
+		alert("只支持汉字作诗");
+		return;
+	}
+	$("#remakeBtn").data("text", text);
+	var url = "http://192.168.32.78:9001/poem?start_words=" + text;
+	$("#inputDialog").removeClass("show");
+	
+	$(".showInputBtn").hide();
+	$(".btnGroupWrap").show();
+	
+	$.ajax({
+		url: url,
+		type: "get",
+		dataType: "jsonp",
+		success: function(data){
+			if(data.code == 0){
+				window.poem = data.poem;
+				if(data.poem.length > 0){
+					var html = createWords(data.poem);
+					$("#words ul").html(html);
+				}
+			}
+			
+		}
+	})
+})
+
+//重新生成
+$("#remakeBtn").on("touchstart", function(){
+	$("#makeBtn").trigger("touchstart");
+})
+
+
+//继续做诗
+$("#reinputBtn").on("touchstart", function(){
+	$(".showInputBtn").trigger("touchstart");
+})
+
+//生成图片
+$("#getImgBtn").on("click", function(){
+	var arr = [];
+	for(var k in window.poem){
+		arr.push("poem[]=" + window.poem[k]);
+	}
+	$.ajax({
+		url: "http://192.168.32.78:9001/sharegen?" + arr.join("&"),
+		type: "get",
+		dataType: "jsonp",
+		success: function(data){
+			if(data.code == 0){
+				$("#previewWrap").addClass("show");
+				$("#previewWrap img").attr("src", data.url);
+			}
+			
+		}
+	})
+	
+})
+
+$("#previewWrap").on("click", function(){
+	$(this).removeClass("show");
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -340,69 +457,3 @@ function scene2Tick(event){
 	
 }
 
-//场景3
-app.initScene3 = function(){
-	var words = [
-		["鞭炮声震除夕夜", "万家灯火思语时"],
-		["瑞狗衔财报新春", "金蝉吐运福如海"]
-	];
-	var html = createWords(words);
-	$("#words ul").html(html);
-}
-var createWords = function(words){
-	var html = '';
-	for(var i = 0; i < words.length; i++){
-		html += '<li>' + words[i][0] + ',</li>';
-		html += '<li>' + words[i][1] + '。</li>';
-	}
-	return html;
-}
-$(".showInputBtn").on("touchstart", function(){
-	$("#inputDialog input").val("");
-	$("#inputDialog").addClass("show");
-})
-
-//生成
-$("#makeBtn").on("touchstart", function(){
-	var text = $.trim($("#inputDialog input").val());
-	$("#remakeBtn").data("text", text);
-	var url = "http://192.168.32.78:9001/poem?start_words=" + text;
-	$("#inputDialog").removeClass("show");
-	
-	$(".showInputBtn").hide();
-	$(".btnGroupWrap").show();
-	
-	$.ajax({
-		url: url,
-		type: "get",
-		dataType: "jsonp",
-		success: function(data){
-			if(data.poem.length > 0){
-				var html = createWords(data.poem);
-				$("#words ul").html(html);
-			}
-			
-		}
-	})
-})
-
-//重新生成
-$("#remakeBtn").on("touchstart", function(){
-	$("#makeBtn").trigger("touchstart");
-})
-
-
-//继续做诗
-$("#reinputBtn").on("touchstart", function(){
-	$(".showInputBtn").trigger("touchstart");
-})
-
-//生成图片
-$("#getImgBtn").on("click", function(){
-	$("#previewWrap").addClass("show");
-	$("#previewWrap img").attr("src", "./src/img/spring/bg-ticket.png");
-})
-
-$("#previewWrap").on("click", function(){
-	$(this).removeClass("show");
-})
