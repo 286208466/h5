@@ -1,3 +1,6 @@
+
+var utils = require("./utils");
+
 var htmlWidth = $('html').width();
 var designWidth = 750;
 var designHeight = 1334;
@@ -83,7 +86,8 @@ function loadResource(){
 	//loader.loadFile({id: "bgm", src: "./src/file/bgm.mp3"});
 	loader.loadFile({id: "video", src: "./src/file/zbg.mp4"});
 	var manifest = [
-		{id: "mainCanvasBg", src: "./src/img/spring/mainCanvasBg.jpg"}
+		{id: "scene1", src: "./src/img/spring/scene1.jpg"}
+		//,{id: "mainCanvasBg", src: "./src/img/spring/mainCanvasBg.jpg"}
 		,{id: "scene1Ticket", src: "./src/img/spring/scene1Ticket.png"}
 		,{id: "scene1BgTicket", src: "./src/img/spring/scene1BgTicket.png"}
 		,{id: "scene1Btn", src: "./src/img/spring/scene1Btn.png"}
@@ -140,15 +144,9 @@ var mainCanvasBg;
 
 //场景1
 var scene1bg;
-var scene1grant;
-var scene1SpriteSheet;
 var scene1Ticket;
 var scene1bgContainer;
 var scene1TicketContainer;
-//抢票成功几率50%
-var isSuccess = Math.random()*2 > 1;
-var imgFlag = "ticketsFailure";
-isSuccess = false;
 
 function initMainView(){
 	
@@ -161,9 +159,13 @@ function initMainView(){
 	//创建舞台 
 	mainstage = new createjs.Stage(mainCanvas);
 	
+	createjs.Touch.enable(mainstage);
+	
 	//渲染背景图片
-	mainCanvasBg = new createjs.Bitmap(loader.getResult("mainCanvasBg"));
-	var scale = (2*windowHeight)/1334;
+	//mainCanvasBg = new createjs.Bitmap(loader.getResult("mainCanvasBg"));
+	//var scale = (2*windowHeight)/1334;
+	mainCanvasBg = new createjs.Bitmap(loader.getResult("scene1"));
+	var scale = (2*windowWidth)/750;
 	mainCanvasBg.scaleX = mainCanvasBg.scaleY = scale;
 	mainstage.addChild(mainCanvasBg);
 	
@@ -181,40 +183,20 @@ function initMainView(){
 	scene1bgContainer.addChild(scene1bg);
 	
 	scene1Ticket = new createjs.Bitmap(loader.getResult("scene1BgTicket"));
-	scene1Ticket.x = (scene1bgContainer.width - scene1Ticket.image.width)/2;;
+	scene1Ticket.x = (scene1bgContainer.width - scene1Ticket.image.width)/2;
 	scene1Ticket.y = 100;
 	scene1bgContainer.addChild(scene1Ticket);
 	
 	mainstage.addChild(scene1bgContainer);
-	
-	if(isSuccess){
-		imgFlag = "ticketsSuccess";
-	}
-	//出票动画
-	scene1SpriteSheet = new createjs.SpriteSheet({
-		//帧率
-		framerate: 9,
-		//图片地址
-		"images": [loader.getResult(imgFlag)],
-		"frames": {"regX": 0, "height": 389, "count": 12, "regY": 0, "width": 606},
-		"animations": {
-			"run": [0, 11],
-			"startRun": [0]
-		},
-		"complete": true
-	});
-	scene1grant = new createjs.Sprite(scene1SpriteSheet);
-	scene1grant.x = windowWidth - 606/2;
-	scene1grant.y = scene1bgContainer.y + 280;
-	scene1grant.alpha = 0;
-	mainstage.addChild(scene1grant);
-	
 	
 	mainstage.update();
 	
 }
 
 //按钮点击事件
+var scene1SpriteSheet;
+var scene1grant;
+var scene1Failure;
 $("#ticketBtn a").on("touchstart", function(){
 	
 	$("#goBtn").siblings().addClass("hide");
@@ -222,21 +204,62 @@ $("#ticketBtn a").on("touchstart", function(){
 	createjs.Ticker.setFPS(8);
 	createjs.Ticker.addEventListener("tick", tick);
 	
-	scene1grant.alpha = 1;
-	scene1grant.gotoAndPlay("run");
+	if(!!scene1grant){
+		mainstage.removeChild(scene1grant);
+	}
 	
-	setTimeout(function(){
-		scene1grant.stop();
+	if(!!scene1Failure){
+		scene1bgContainer.removeChild(scene1Failure);
+	}
+	
+	//抢票成功几率50%
+	var isSuccess = Math.random()*2 > 1;
+	//isSuccess = false;
+	
+	if(isSuccess){
+		//出票动画
+		scene1SpriteSheet = new createjs.SpriteSheet({
+			//帧率
+			framerate: 9,
+			//图片地址
+			"images": [loader.getResult("ticketsSuccess")],
+			"frames": {"regX": 0, "height": 389.5, "count": 12, "regY": 0, "width": 606},
+			"animations": {
+				"run": [0, 11],
+				"startRun": [0]
+			},
+			"complete": true
+		});
+		scene1grant = new createjs.Sprite(scene1SpriteSheet);
+		scene1grant.x = windowWidth - 606/2;
+		scene1grant.y = scene1bgContainer.y + 280;
+		mainstage.addChild(scene1grant);
 		mainstage.update();
-		if(isSuccess){
+		scene1grant.gotoAndPlay("run");
+		
+	}else{
+		scene1Failure = new createjs.Bitmap(loader.getResult("ticketsFailure"));
+		scene1Failure.x = (scene1bgContainer.width - scene1Failure.image.width)/2;
+		scene1Failure.y = 200;
+		scene1bgContainer.addChild(scene1Failure);
+		mainstage.update();
+	}
+	
+	if(isSuccess){
+		setTimeout(function(){
+			scene1grant.stop();
+			mainstage.update();
 			$("#goBtn a[data-target='success']").removeClass("hide");
 			$("#goBtn a[data-target='failure']").addClass("hide");
-		}else{
-			$("#goBtn a[data-target='failure']").removeClass("hide");
-			$("#goBtn a[data-target='success']").addClass("hide");
-		}
+		}, (12)/8*1000);
 		
-	}, (12)/8*1000);
+	}else{
+		$("#goBtn a[data-target='failure']").removeClass("hide");
+		$("#goBtn a[data-target='success']").addClass("hide");
+	}
+	
+	
+	
 	
 });
 
@@ -305,7 +328,14 @@ function initScene3(){
 var createWords = function(words){
 	var html = '';
 	for(var i = 0; i < words.length; i++){
-		html += '<li>' + words[i] + '</li>';
+		if(i%2 == 0){
+			html += '<li>';
+			html += '<span>' + words[i] + ',</span>';
+		}else{
+			html += '<span>&ensp;' + words[i] + '。</span>';
+			html += '</li>';
+		}
+		
 	}
 	return html;
 }
@@ -322,10 +352,10 @@ $("#makeBtn").on("touchstart", function(){
 		text = "新年大吉大利";
 	}
 	if(text.length > 8){
-		alert("不能超过8个字哦");
+		utils.warning("不能超过8个字哦");
 		return;
 	}else if(!/^[\u4e00-\u9fa5]{1,8}$/i.test(text)){
-		alert("只支持汉字作诗");
+		utils.warning("只支持汉字作诗");
 		return;
 	}
 	$("#remakeBtn").data("text", text);
@@ -385,7 +415,7 @@ $("#getImgBtn").on("click", function(){
 })
 
 $("#previewWrap").on("click", function(){
-	$(this).removeClass("show");
+	/*$(this).removeClass("show");*/
 })
 
 

@@ -131,3 +131,56 @@ p {
     -moz-box-flex: 1;
     flex: 1 1 0;
 }
+/*
+	错误提示
+*/
+#warning {
+	position: fixed;
+    z-index: 99000;
+    top: 20px;
+    left: 50%;
+    -webkit-transform: translate(-50%,0);
+    transform: translate(-50%,0);
+    text-align: center;
+}
+#warning > div > span {
+	display: inline-block;
+	background: rgba(0, 0, 0, 0.8);
+	color: #f1f1f1;
+    padding: 10px;
+    line-height: 22px;
+    border-radius: 4px;
+    animation-name: ly-bounceIn;
+	-webkit-animation-name: ly-bounceIn;
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;
+	-webkit-animation-duration: .18s;
+	animation-duration: .18s;
+	font-size: 15px;
+	min-width: 232px;
+	max-width: 300px;
+}
+@keyframes ly-bounceIn {
+	0% {
+		opacity: 0;
+		-webkit-transform: scale(.5);
+		transform: scale(.5)
+	}
+	100% {
+		opacity: 1;
+		-webkit-transform: scale(1);
+		transform: scale(1)
+	}
+}
+@-webkit-keyframes ly-bounceIn {
+	0% {
+		opacity: 0;
+		-webkit-transform: scale(.5);
+		transform: scale(.5)
+	}
+	100% {
+		opacity: 1;
+		-webkit-transform: scale(1);
+		transform: scale(1)
+	}
+}
