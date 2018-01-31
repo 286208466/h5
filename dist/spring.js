@@ -63,13 +63,12 @@
 /******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
-/******/ ({
-
-/***/ 0:
+/******/ ([
+/* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var utils = __webpack_require__(12);
+var utils = __webpack_require__(1);
 
 var htmlWidth = $('html').width();
 var designWidth = 750;
@@ -144,6 +143,9 @@ if(isPC()){
 	preloading(isShowPre);
 }
 
+if(utils.isWx()){
+	$("#scene3 .content").append('<img src="./src/img/spring/share.png" class="share">');
+}
 
 //加载资源
 var loader;
@@ -216,7 +218,6 @@ var mainCanvasBg;
 var scene1bg;
 var scene1Ticket;
 var scene1bgContainer;
-var scene1TicketContainer;
 
 function initMainView(){
 	
@@ -267,7 +268,7 @@ function initMainView(){
 var scene1SpriteSheet;
 var scene1grant;
 var scene1Failure;
-$("#ticketBtn a").on("touchstart", function(){
+$("#ticketBtn .circleBtn").on("touchstart", function(){
 	
 	$("#goBtn").siblings().addClass("hide");
 	
@@ -339,16 +340,13 @@ function tick(){
 
 //回家
 $("#goBtn .go1").on("touchstart", function(){
-	$("#preloadWrap").addClass("toleft");
-	$("#scene2").addClass("cur");
 	playVideo();
+	$("#preloadWrap").addClass("hide");
 });
 
 //继续抢
 $("#goBtn .go2").on("touchstart", function(){
-	scene1grant.gotoAndPlay("startRun");
-	scene1grant.gotoAndPlay("run");
-	//$("#ticketBtn a").trigger("touchstart");
+	$("#ticketBtn .circleBtn").trigger("touchstart");
 });
 
 //不抢了
@@ -400,7 +398,11 @@ var createWords = function(words){
 	for(var i = 0; i < words.length; i++){
 		if(i%2 == 0){
 			html += '<li>';
-			html += '<span>' + words[i] + ',</span>';
+			html += '<span>';
+			for(var j = 0; j < words[i].length; j++){
+				html += '<i>' + words[i][j] + '</i>'
+			}
+			html += ',</span>'
 		}else{
 			html += '<span>&ensp;' + words[i] + '。</span>';
 			html += '</li>';
@@ -435,19 +437,27 @@ $("#makeBtn").on("touchstart", function(){
 	$(".showInputBtn").hide();
 	$(".btnGroupWrap").show();
 	
+	utils.toast(true);
 	$.ajax({
 		url: url,
 		type: "get",
 		dataType: "jsonp",
 		success: function(data){
+			
+			utils.toast(false);
 			if(data.code == 0){
 				window.poem = data.poem;
 				if(data.poem.length > 0){
 					var html = createWords(data.poem);
 					$("#words ul").html(html);
 				}
+			}else{
+				utils.warning(data.msg);
 			}
 			
+		},
+		error: function(){
+			utils.toast(false);
 		}
 	})
 })
@@ -469,23 +479,30 @@ $("#getImgBtn").on("click", function(){
 	for(var k in window.poem){
 		arr.push("poem[]=" + window.poem[k]);
 	}
+	utils.toast(true);
 	$.ajax({
 		url: "http://192.168.32.78:9001/sharegen?" + arr.join("&"),
 		type: "get",
 		dataType: "jsonp",
 		success: function(data){
+			utils.toast(false);
 			if(data.code == 0){
 				$("#previewWrap").addClass("show");
 				$("#previewWrap img").attr("src", data.url);
+			}else{
+				utils.warning(data.msg);
 			}
 			
+		},
+		error: function(){
+			utils.toast(false);
 		}
 	})
 	
 })
 
-$("#previewWrap").on("click", function(){
-	/*$(this).removeClass("show");*/
+$("#previewWrap .closeBtn").on("touchstart", function(){
+	$("#previewWrap").removeClass("show");
 })
 
 
@@ -560,8 +577,7 @@ function scene2Tick(event){
 
 
 /***/ }),
-
-/***/ 12:
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function(){
@@ -865,6 +881,7 @@ function scene2Tick(event){
         return decrypt;
     }
     
+    //提示
     Utils.prototype.warning = function(message){
     	let warning = $("#warning");
 		let body = $(document.body);
@@ -876,6 +893,28 @@ function scene2Tick(event){
 		setTimeout(function(){
 			body.find("#warning").fadeOut();
 		}, 2500);
+    }
+    
+    //加载中
+    Utils.prototype.toast = function(isShow){
+    	if(isShow){
+    		if($("#toast").length == 0){
+    			$(document.body).append('<div id="toast" style="display: none;"><div class="mask_transparent"></div><div class="toast"><i class="icon-loading"></i><p class="toast_content">数据加载中</p></div></div>')
+    		}
+    		$("#toast").fadeIn(200);
+    	}else{
+    		$("#toast").fadeOut(200);
+    	}
+    }
+    
+    //是否是微信客户端
+    Utils.prototype.isWx = function(){
+    	var ua = navigator.userAgent.toLowerCase(); 
+        if(ua.match(/MicroMessenger/i) == "micromessenger") { 
+            return true; 
+         } else { 
+            return false; 
+        }
     }
     
     /**
@@ -919,5 +958,4 @@ function scene2Tick(event){
 }());
 
 /***/ })
-
-/******/ });
+/******/ ]);

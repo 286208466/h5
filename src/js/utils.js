@@ -299,6 +299,7 @@
         return decrypt;
     }
     
+    //提示
     Utils.prototype.warning = function(message){
     	let warning = $("#warning");
 		let body = $(document.body);
@@ -310,6 +311,28 @@
 		setTimeout(function(){
 			body.find("#warning").fadeOut();
 		}, 2500);
+    }
+    
+    //加载中
+    Utils.prototype.toast = function(isShow){
+    	if(isShow){
+    		if($("#toast").length == 0){
+    			$(document.body).append('<div id="toast" style="display: none;"><div class="mask_transparent"></div><div class="toast"><i class="icon-loading"></i><p class="toast_content">数据加载中</p></div></div>')
+    		}
+    		$("#toast").fadeIn(200);
+    	}else{
+    		$("#toast").fadeOut(200);
+    	}
+    }
+    
+    //是否是微信客户端
+    Utils.prototype.isWx = function(){
+    	var ua = navigator.userAgent.toLowerCase(); 
+        if(ua.match(/MicroMessenger/i) == "micromessenger") { 
+            return true; 
+         } else { 
+            return false; 
+        }
     }
     
     /**
