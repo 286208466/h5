@@ -82,6 +82,7 @@ $('html').css({
 var startTime;
 //是否显示预加载
 var isShowPre = Math.random()*2 > 1;
+isShowPre = false;
 function preloading(isShowPre){
 	
 	createjs.CSSPlugin.install(createjs.Tween);
@@ -143,8 +144,8 @@ if(isPC()){
 	preloading(isShowPre);
 }
 
-if(utils.isWx()){
-	$("#scene3 .content").append('<img src="./src/img/spring/share.png" class="share">');
+if(!utils.isWx()){
+	$("#scene3 .content").append('<img src="./src/img/spring/share.png" class="share" id="shareTip">');
 }
 
 //加载资源
@@ -392,6 +393,23 @@ function initScene3(){
 	];
 	var html = createWords(words);
 	$("#words ul").html(html);
+	
+	if(!utils.isWx()){
+		var shareTip = document.getElementById("shareTip");
+		createjs.Tween.get(shareTip, {loop: false})
+		.wait(1000)
+		.set({opacity: "1"}, shareTip.style)
+		.wait(1000)
+		.set({opacity: "0"}, shareTip.style)
+		.wait(1000)
+		.set({opacity: "1"}, shareTip.style)
+		.wait(1000)
+		.set({opacity: "0"}, shareTip.style)
+		.wait(1000)
+		.set({opacity: "1"}, shareTip.style)
+		.wait(1000)
+		.set({opacity: "0"}, shareTip.style)
+	}
 }
 var createWords = function(words){
 	var html = '';

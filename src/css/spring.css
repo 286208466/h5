@@ -391,6 +391,9 @@
 	right: 0.3rem;
 	top: 0.3rem;
 	width: 2.4rem;
+	opacity: 0;
+	-webkit-transition: all 0.45s ease;
+	transition: all 0.45s ease;
 }
 #inputDialog {
 	position: fixed;
