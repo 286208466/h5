@@ -12,7 +12,7 @@ $('html').css({
 //开始加载的事件
 var startTime;
 //是否显示预加载
-var isShowPre = false;
+var isShowPre = Math.random()*2 > 1;
 function preloading(isShowPre){
 	
 	createjs.CSSPlugin.install(createjs.Tween);
