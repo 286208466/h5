@@ -75,7 +75,7 @@ if(isPC()){
 	preloading(isShowPre);
 }
 
-if(!utils.isWx()){
+if(utils.isWx()){
 	$("#scene3 .content").append('<img src="./src/img/spring/share.png" class="share" id="shareTip">');
 }
 
@@ -97,6 +97,7 @@ function loadResource(){
 		,{id: "scene1Btn", src: "./src/img/spring/scene1Btn.png"}
 		,{id: "ticketsSuccess", src: "./src/img/spring/ticketsSuccess.png"}
 		,{id: "ticketsFailure", src: "./src/img/spring/ticketsFailure.png"}
+		,{id: "tickets_failure", src: "./src/img/spring/tickets_failure.png"}
 		
 	];
 	loader.loadManifest(manifest);
@@ -325,7 +326,7 @@ function initScene3(){
 	var html = createWords(words);
 	$("#words ul").html(html);
 	
-	if(!utils.isWx()){
+	if(utils.isWx()){
 		var shareTip = document.getElementById("shareTip");
 		createjs.Tween.get(shareTip, {loop: false})
 		.wait(1000)
@@ -363,7 +364,7 @@ var createWords = function(words){
 $(".showInputBtn").on("touchstart", function(){
 	$("#inputDialog input").val("");
 	$("#inputDialog").addClass("show");
-})
+});
 
 //生成
 window.poem = "";
@@ -408,19 +409,19 @@ $("#makeBtn").on("touchstart", function(){
 		error: function(){
 			utils.toast(false);
 		}
-	})
-})
+	});
+});
 
 //重新生成
 $("#remakeBtn").on("touchstart", function(){
 	$("#makeBtn").trigger("touchstart");
-})
+});
 
 
 //继续做诗
 $("#reinputBtn").on("touchstart", function(){
 	$(".showInputBtn").trigger("touchstart");
-})
+});
 
 //生成图片
 $("#getImgBtn").on("click", function(){
@@ -446,13 +447,13 @@ $("#getImgBtn").on("click", function(){
 		error: function(){
 			utils.toast(false);
 		}
-	})
+	});
 	
-})
+});
 
 $("#previewWrap .closeBtn").on("touchstart", function(){
 	$("#previewWrap").removeClass("show");
-})
+});
 
 
 
