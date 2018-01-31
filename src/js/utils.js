@@ -113,8 +113,8 @@
     
     //根据url参数名称获取参数的值
     Utils.prototype.getUrlParam = function(name){
-    	let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
-		let r = window.location.search.substr(1).match(reg);
+    	var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+		var r = window.location.search.substr(1).match(reg);
 		if (r != null) {
 			return decodeURI(r[2]);
 		}
@@ -123,7 +123,7 @@
     
     //iframe下载文件
     Utils.prototype.download = function(filepath){
-		let iframe = document.getElementById("downloadframe");
+		var iframe = document.getElementById("downloadframe");
 		if (iframe) {
 			iframe.src = filepath;
 		} else {
@@ -137,7 +137,7 @@
     
     //获取IE版本
     Utils.prototype.getIEVersion = function(){
-		let ua = navigator.userAgent, matches, tridentMap = {'4': 8, '5': 9, '6': 10, '7': 11};
+		var ua = navigator.userAgent, matches, tridentMap = {'4': 8, '5': 9, '6': 10, '7': 11};
 		matches = ua.match(/MSIE (\d+)/i);
 		if (matches && matches[1]) {
 			return +matches[1];
@@ -152,16 +152,16 @@
     //封装ajax
     Utils.prototype.ajax = function(param){
 		
-		let _url = param.url;
-		let _data = param.data || {};
+		var _url = param.url;
+		var _data = param.data || {};
 		if(typeof _data == "object"){
 			if(!!this.getCookie("companyCode")){
 				_data.companyCode = this.getCookie("companyCode");
 			}
 		}
-		let _type = !!param.type ? param.type : "post";
-		let _async = (typeof param.async) != 'undefined' ? param.async : true;
-		let _contentType = !!param.contentType ? param.contentType : "application/x-www-form-urlencoded";
+		var _type = !!param.type ? param.type : "post";
+		var _async = (typeof param.async) != 'undefined' ? param.async : true;
+		var _contentType = !!param.contentType ? param.contentType : "application/x-www-form-urlencoded";
 		$.ajax({
 			url: _url,
 			data: _data,
@@ -192,20 +192,20 @@
     
     //过滤表情
     Utils.prototype.filteremoji = function(content){
-		let ranges = [  
+		var ranges = [  
 			'\ud83c[\udf00-\udfff]',  
 			'\ud83d[\udc00-\ude4f]',  
 			'\ud83d[\ude80-\udeff]'  
 		];  
-		let emojireg = content.replace(new RegExp(ranges.join('|'), 'g'), '');  
+		var emojireg = content.replace(new RegExp(ranges.join('|'), 'g'), '');  
 		return emojireg;  
 	}
     
     //计算字节
     Utils.prototype.countByte = function(s){
-		let len = 0;  
-		for (let i=0; i<s.length; i++) {   
-			let c = s.charCodeAt(i);   
+		var len = 0;  
+		for (var i=0; i<s.length; i++) {   
+			var c = s.charCodeAt(i);   
 			//单字节加1   
 			if ((c >= 0x0001 && c <= 0x007e) || (0xff60<=c && c<=0xff9f)) {   
 				len++;   
@@ -232,7 +232,7 @@
     
     //加载js
     Utils.prototype.loadScript = function(url, callback){
-		let script = document.createElement("script")
+		var script = document.createElement("script")
 		script.type = "text/javascript";
 		if (script.readyState) {
 			script.onreadystatechange = function(){
@@ -252,18 +252,18 @@
     
     //设置cookie
     Utils.prototype.setCookie = function(key, value, exp) {
-		let date = new Date();
+		var date = new Date();
 		date.setTime(date.getTime() + (exp * 24 * 60 * 60 * 1000));
-		let expires = "; expires=" + date.toGMTString();
+		var expires = "; expires=" + date.toGMTString();
 		document.cookie = key + "=" + value + expires + "; path=/";
 	}
     
     //获取cookie
     Utils.prototype.getCookie = function(key){
-		let nameEQ = key + "=";
-		let ca = document.cookie.split(';');
-		for (let i = 0, max = ca.length; i < max; i++) {
-			let c = ca[i];
+		var nameEQ = key + "=";
+		var ca = document.cookie.split(';');
+		for (var i = 0, max = ca.length; i < max; i++) {
+			var c = ca[i];
 			while (c.charAt(0) === ' ') {
 				c = c.substring(1, c.length);
 			}
@@ -284,15 +284,15 @@
     
     //base64加密
     Utils.prototype.encrypt = function(str){
-        let base64 = new _base64();
-        let encrypt = base64.encode(str);
+        var base64 = new _base64();
+        var encrypt = base64.encode(str);
         return encrypt;
     }
     
     //base64解密
     Utils.prototype.decrypt = function(str){
-        let base64 = new _base64();
-        let decrypt = base64.decode(str);
+        var base64 = new _base64();
+        var decrypt = base64.decode(str);
         decrypt = escape(decrypt);
         decrypt = decrypt.replace(/%00/g, '');
         decrypt = unescape(decrypt);
@@ -301,12 +301,12 @@
     
     //提示
     Utils.prototype.warning = function(message){
-    	let warning = $("#warning");
-		let body = $(document.body);
+    	var warning = $("#warning");
+		var body = $(document.body);
 		if(warning.length > 0){
 			warning.remove();
 		}
-		let html = '<div id="warning"><div><span>' + message + '</span></div></div>';
+		var html = '<div id="warning"><div><span>' + message + '</span></div></div>';
 		body.append(html);
 		setTimeout(function(){
 			body.find("#warning").fadeOut();

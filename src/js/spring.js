@@ -13,7 +13,7 @@ $('html').css({
 var startTime;
 //是否显示预加载
 var isShowPre = Math.random()*2 > 1;
-isShowPre = false;
+//isShowPre = false;
 function preloading(isShowPre){
 	
 	createjs.CSSPlugin.install(createjs.Tween);
@@ -290,17 +290,32 @@ $("#goBtn .go3").on("touchstart", function(){
 });
 
 //播放视频
-var video = document.getElementById("video");
+var video;
 function playVideo(){
+	video = document.getElementById("video");
 	video.src = loader.getItem("video").src;
 	video.play();
+	
+	video.onended = function(){
+		$("#scene2").addClass("isHide").removeClass("cur");
+		$("#scene3").addClass("cur");
+		initScene3();
+	};
+
+	video.addEventListener("timeupdate",function(){
+		console.log(this.currentTime)
+		if(this.currentTime > 21.4 && this.currentTime < 21.6){
+			this.pause();
+			$("#tip1").show();
+		}
+	});
 }
 
-video.onended = function(){
-	$("#scene2").addClass("isHide").removeClass("cur");
-	$("#scene3").addClass("cur");
-	initScene3();
-};
+//回家过年
+$("#scene2 .goHomeWrap").on("touchstart", function(){
+	document.getElementById("video").play();
+	$("#tip1").hide();
+})
 
 //声音按钮事件
 /*$("#bgAudioBtn").on("touchstart", function(){

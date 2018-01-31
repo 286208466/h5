@@ -28,16 +28,16 @@
 	
 	<div id="preloadWrap">
 		<div class="text flex" id="t1">
-			<p class="flexitem">请放心</p>
+			<p class="flexitem">加载中...</p>
 		</div>
 		<div class="text flex" id="t2">
-			<p class="flexitem">您的手机是正常的</p>
+			<p class="flexitem">拼命加载中...</p>
 		</div>
 		<div class="text flex" id="t3">
-			<p class="flexitem">耐心点，还在加载中呢</p>
+			<p class="flexitem">还在加载中...</p>
 		</div>
 		<div class="text flex" id="t4">
-			<p class="flexitem">让我们来看看进度条吧</p>
+			<p class="flexitem">等得花儿都谢了...</p>
 		</div>
 		<div class="text" id="mainView">
 			<div id="topScreen">
@@ -70,7 +70,15 @@
 	</div>
 	
 	<div class="scene cur" id="scene2">
-		<video id="video" webkit-playsinline="" playsinline=""></video>
+		<div id="tip1">
+			<div class="mask_transparent"></div>
+			<div class="goHomeWrap">
+				<img class="btn1" src="./src/img/spring/btn1.png">
+				<img class="btn2" src="./src/img/spring/btn2.png">
+				<img class="hand" src="./src/img/spring/hand.png">
+			</div>
+		</div>
+		<video id="video" preload="auto" webkit-playsinline="true" playsinline="true" x5-video-player-type="h5" x-webkit-airplay="true" x5-video-player-fullscreen="true" x5-video-orientation="portraint"></video>
 	</div>
 	
 	<div class="scene" id="scene3">
