@@ -13,7 +13,7 @@ $('html').css({
 var startTime;
 //是否显示预加载
 var isShowPre = Math.random()*2 > 1;
-//isShowPre = false;
+isShowPre = false;
 function preloading(isShowPre){
 	
 	createjs.CSSPlugin.install(createjs.Tween);
@@ -112,24 +112,25 @@ function handleAllComplete(){
 	//createjs.Sound.play("bgm");
 	
 	//隐藏加载
-	if(isShowPre){
+	/*if(isShowPre){
 		var endTime = new Date().getTime();
 		if(endTime - startTime < 20000){
 			setTimeout(function(){
 				$("#mainView").addClass("show");
-				//$("#bgAudioBtn").css("z-index", "1000");
 			}, (20000 - endTime + startTime))
 		}else{
 			$("#mainView").addClass("show");
-			//$("#bgAudioBtn").css("z-index", "1000");
 		}
 		
 	}else{
 		setTimeout(function(){
 			$("#mainView").addClass("show");
 		}, 2000)
-		//$("#bgAudioBtn").css("z-index", "1000");
-	}
+	}*/
+	
+	$("#preloadWrap").on("click", function(){
+		$("#mainView").addClass("show");
+	})
 	
 	//初始化界面
 	initMainView();
@@ -213,7 +214,7 @@ $("#ticketBtn .circleBtn").on("touchstart", function(){
 	}
 	
 	if(!!scene1Failure){
-		scene1bgContainer.removeChild(scene1Failure);
+		mainstage.removeChild(scene1Failure);
 	}
 	
 	//抢票成功几率50%
@@ -243,9 +244,12 @@ $("#ticketBtn .circleBtn").on("touchstart", function(){
 		
 	}else{
 		scene1Failure = new createjs.Bitmap(loader.getResult("ticketsFailure"));
-		scene1Failure.x = (scene1bgContainer.width - scene1Failure.image.width)/2;
-		scene1Failure.y = 200;
-		scene1bgContainer.addChild(scene1Failure);
+		scene1Failure.x = windowWidth - scene1Failure.image.width/2;
+		scene1Failure.y = scene1bgContainer.y + 250;
+		scene1Failure.alpha = 0;
+		createjs.Tween.get(scene1Failure)
+			.to({alpha: 1, y:(scene1bgContainer.y + 280)}, 500, createjs.Ease.linear);
+		mainstage.addChild(scene1Failure);
 		mainstage.update();
 	}
 	
@@ -275,10 +279,27 @@ function tick(){
 $("#goBtn .go1").on("touchstart", function(){
 	playVideo();
 	$("#preloadWrap").addClass("hide");
+	
+	var tip = document.getElementById("tip2");
+	createjs.Tween.get(tip, {loop: false})
+		.wait(1000)
+		.set({opacity: "1"}, tip.style)
+		.wait(1000)
+		.set({opacity: "0"}, tip.style)
+		.wait(1000)
+		.set({opacity: "1"}, tip.style)
+		.wait(1000)
+		.set({opacity: "0"}, tip.style)
+		.wait(1000)
+		.set({opacity: "1"}, tip.style)
+		.wait(1000)
+		.set({opacity: "0"}, tip.style)
+	
 });
 
 //继续抢
 $("#goBtn .go2").on("touchstart", function(){
+	$("#goBtn a").addClass("hide");
 	$("#ticketBtn .circleBtn").trigger("touchstart");
 });
 
@@ -291,9 +312,11 @@ $("#goBtn .go3").on("touchstart", function(){
 
 //播放视频
 var video;
+var videoCurrentTime;
+
+document.getElementById("video").src = loader.getItem("video").src;
 function playVideo(){
 	video = document.getElementById("video");
-	video.src = loader.getItem("video").src;
 	video.play();
 	
 	video.onended = function(){
@@ -304,17 +327,32 @@ function playVideo(){
 
 	video.addEventListener("timeupdate",function(){
 		console.log(this.currentTime)
-		if(this.currentTime > 21.4 && this.currentTime < 21.6){
+		if(!videoCurrentTime && this.currentTime > 24.2){
 			this.pause();
+			videoCurrentTime = this.currentTime;
 			$("#tip1").show();
 		}
 	});
 }
 
+$("#scene2").on("touchstart", function(){
+	var v = document.getElementById("video");
+	v.playbackRate = 2;
+})
+
+$("#scene2").on("touchend", function(){
+	var v = document.getElementById("video");
+	v.playbackRate = 1;
+})
+
 //回家过年
-$("#scene2 .goHomeWrap").on("touchstart", function(){
-	document.getElementById("video").play();
-	$("#tip1").hide();
+$("#scene2 #tip1").on("touchstart", function(){
+	if(!$("#tip1").is(":hidden")){
+		var v = document.getElementById("video");
+		v.currentTime = videoCurrentTime;
+		v.play();
+		$("#tip1").hide();
+	}
 })
 
 //声音按钮事件
@@ -333,10 +371,14 @@ $("#scene2 .goHomeWrap").on("touchstart", function(){
 //场景3
 function initScene3(){
 	var words = [
-		"鞭炮声震除夕夜", 
-		"万家灯火思语时",
-		"瑞狗衔财报新春", 
-		"金蝉吐运福如海"
+		"新诗有明月", 
+		"更有携手留",
+		"年来走马蹄", 
+		"半是出飞流",
+		"快意方寸薄", 
+		"一身无所求",
+		"乐游揜不得", 
+		"心地心不休"
 	];
 	var html = createWords(words);
 	$("#words ul").html(html);

@@ -287,51 +287,37 @@
 }
 #scene2 .goHomeWrap {
 	position: absolute;
+	right: 0.3rem;
+	bottom: 2rem;
+	z-index: 1000;
+}
+#scene2 .goHomeWrap img {
+	width: 0.83rem;
+	-webkit-animation: opa 1.5s infinite linear;
+	animation: opa 1.5s infinite linear;
+	-webkit-transform: translate(0, 0);
+	transform: translate(0, 0);
+}
+@keyframes opa{
+	0%{transform:translate(0, 0)}
+	100%{transform:translate(-50px, 0)}
+}
+#scene2 #tip2 {
+	position: absolute;
 	top: 50%;
 	left: 50%;
 	-webkit-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
-	z-index: 1000;
-}
-#scene2 .goHomeWrap .btn2 {
-	width: 1.99rem;
-}
-#scene2 .goHomeWrap .btn1 {
-	width: 1.99rem;
-	position: absolute;
-	top: 0.4rem;
-	-webkit-animation: opa 3s infinite linear;
-}
-@keyframes opa {
-    0%,100%{
-        transform:transLate(0,0px);
-    }
-    25%{
-        transform:transLate(0,-6px)
-    }
-    32%{
-        transform:transLate(0,0px)
-    }
-    45%{
-        transform:transLate(0,-4px)
-    }
-    50%{
-        transform:transLate(0,0px)
-    }
-}
-#scene2 .goHomeWrap .hand {
-	position: absolute;
-    top: 0.8rem;
-    left: 1rem;
-    -webkit-animation: scad 0.4s infinite linear;
-}
-@-webkit-keyframes scad{
-    0%{
-        transform: translate(0px,0px) rotate(-17deg);
-    }
-    100%{
-        transform: translate(10px,20px) rotate(-17deg);
-    }
+	width: 3.04rem;
+	height: 1.15rem;
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 100%;
+    background-image: url(../../src/img/spring/tip2.png);
+    z-index: 222;
+    opacity: 0;
+    -webkit-transition: all 1s ease;
+    transition: all 1s ease;
 }
 /* 
 	场景3

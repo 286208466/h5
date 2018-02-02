@@ -73,10 +73,10 @@
 		<div id="tip1">
 			<div class="mask_transparent"></div>
 			<div class="goHomeWrap">
-				<img class="btn1" src="./src/img/spring/btn1.png">
-				<img class="btn2" src="./src/img/spring/btn2.png">
-				<img class="hand" src="./src/img/spring/hand.png">
+				<img src="./src/img/spring/hand2.png">
 			</div>
+		</div>
+		<div id="tip2">
 		</div>
 		<video id="video" preload="auto" webkit-playsinline="true" playsinline="true" x5-video-player-type="h5" x-webkit-airplay="true" x5-video-player-fullscreen="true" x5-video-orientation="portraint"></video>
 	</div>
@@ -231,20 +231,21 @@ var initSnowCanvas = function(id){
 </script>
 <script type="text/javascript" src="./dist/spring.js"></script>
 <!-- 分享 -->
-<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js" charset="utf-8"></script>
+<script type="text/javascript" src="//res.wx.qq.com/open/js/jweixin-1.0.0.js" charset="utf-8"></script>
 <script>
 var _url = window.location.href;
 var _appId = "wxf5ace9dbc2ed5a56";
 var _secret = "ada508eeb01215a8c8736ede0b24cbc0";
 $.ajax({
-	url:"/scsf/core/activity.signature.do",
-	type:"post",
-	data:{
+	url: "https://www.71chat.com/scsf/core/activity.signature.do",
+	type: "get",
+	data: {
 		"url": _url,
 		"appId": _appId,
 		"secret": _secret
 	},
-	success:function(data){
+	dataType: "jsonp",
+	success: function(data){
 		if(data.status==1){
 			_appId=data.appId
 			_timestamp=data.timestamp;
@@ -306,7 +307,7 @@ $.ajax({
 				var title = "前任？抢票？过年攻略！";
 				var link = "./h5/spring.html";
 				var desc= "满怀期待地回家，迫不及待地挡枪";
-				var imgUrl = "./src/img/spring/wx.jpg";
+				var imgUrl = "https://" + location.hostname + "/h5/src/img/spring/wx.jpg";
 				
 				//监听“分享给朋友”，按钮点击、自定义分享内容及分享结果接口
 				wx.onMenuShareAppMessage({
