@@ -231,11 +231,12 @@ var initSnowCanvas = function(id){
 </script>
 <script type="text/javascript" src="./dist/spring.js"></script>
 <!-- 分享 -->
-<script type="text/javascript" src="//res.wx.qq.com/open/js/jweixin-1.0.0.js" charset="utf-8"></script>
+<script type="text/javascript" src="//res.wx.qq.com/open/js/jweixin-1.2.0.js" charset="utf-8"></script>
+
 <script>
 var _url = window.location.href;
-var _appId = "wxf5ace9dbc2ed5a56";
-var _secret = "ada508eeb01215a8c8736ede0b24cbc0";
+var _appId = "wx2ce7c00a07eb7a7a";
+var _secret = "94a514227f0f4fba5cc7671ad36c76fb";
 $.ajax({
 	url: "https://www.71chat.com/scsf/core/activity.signature.do",
 	type: "get",
@@ -246,11 +247,10 @@ $.ajax({
 	},
 	dataType: "jsonp",
 	success: function(data){
-		if(data.status==1){
-			_appId=data.appId
-			_timestamp=data.timestamp;
-			_nonceStr=data.nonceStr;
-			_signature=data.signature;
+		if(data.errorCode == "0"){
+			_timestamp = data.data.timestamp;
+			_nonceStr = data.data.nonceStr;
+			_signature = data.data.signature;
 			
 			wx.config({
 				//debug: true, 
@@ -315,6 +315,8 @@ $.ajax({
 					desc: desc,
 					link: link,
 					imgUrl: imgUrl,
+					type: "link",
+					dataUrl: "",
 					success: function (res) {
 						shareSuccessCallback();
 					},

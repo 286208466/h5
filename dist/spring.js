@@ -82,7 +82,7 @@ $('html').css({
 var startTime;
 //是否显示预加载
 var isShowPre = Math.random()*2 > 1;
-isShowPre = false;
+//isShowPre = false;
 function preloading(isShowPre){
 	
 	createjs.CSSPlugin.install(createjs.Tween);
@@ -141,7 +141,14 @@ function preloading(isShowPre){
 if(isPC()){
 	$("body").html("<h2>请使用手机浏览</h2>");
 }else{
-	preloading(isShowPre);
+	try{
+		preloading(isShowPre);
+	}catch(e){
+		$("#preloadWrap").addClass("toleft");
+		$("#scene3").addClass("cur");
+		initScene3();
+	}
+	
 }
 
 if(utils.isWx()){
@@ -415,7 +422,48 @@ $("#scene2").on("touchend", function(){
 })
 
 //回家过年
-$("#scene2 #tip1").on("touchstart", function(){
+var tip1 = document.getElementById("tip1");
+var xx,yy,XX,YY,swipeX,swipeY ;
+tip1.addEventListener('touchstart',function(event){
+    xx = event.targetTouches[0].screenX ;
+    yy = event.targetTouches[0].screenY ;
+    swipeX = true;
+    swipeY = true ;
+})
+tip1.addEventListener('touchmove',function(event){
+     XX = event.targetTouches[0].screenX ;
+     YY = event.targetTouches[0].screenY ;
+     if(swipeX && Math.abs(XX-xx)-Math.abs(YY-yy)>0)  //左右滑动
+     {
+         event.stopPropagation();//组织冒泡
+         event.preventDefault();//阻止浏览器默认事件
+         swipeY = false ;
+         if(XX-xx < 0){
+        	 console.log(0);
+         }
+     }
+})
+tip1.addEventListener('touchend',function(event){
+	if(XX-xx<0){
+		if(xx-XX>120){
+			if(!$("#tip1").is(":hidden")){
+				var v = document.getElementById("video");
+				v.currentTime = videoCurrentTime;
+				v.play();
+				$("#tip1").hide();
+			}
+   	 	}else{
+   	 		console.log("2")
+   	 	}
+   	 
+    }else{
+    	console.log("3")
+    }
+    
+})
+
+
+/*$("#scene2 #tip1").on("touchstart", function(){
 	if(!$("#tip1").is(":hidden")){
 		var v = document.getElementById("video");
 		v.currentTime = videoCurrentTime;
@@ -423,7 +471,7 @@ $("#scene2 #tip1").on("touchstart", function(){
 		$("#tip1").hide();
 	}
 })
-
+*/
 //声音按钮事件
 /*$("#bgAudioBtn").on("touchstart", function(){
 	var $this = $(this);
