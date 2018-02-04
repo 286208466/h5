@@ -39,14 +39,21 @@
 		<div class="text flex" id="t4">
 			<p class="flexitem">等得花儿都谢了...</p>
 		</div>
-		<div class="text" id="mainView">
-			<div id="topScreen">
-				<a class="logo">
-					<img src="./src/img/spring/logo.png" width="100">
-				</a>
+		<div class="text" id="mainView" style="z-index: 1">
+			<p id="progress">0%</p>
+			<div id="leftScreen">
+				<div>
+					<a class="logo">
+						<img src="./src/img/spring/leftlogo.png" width="50">
+					</a>
+				</div>
 			</div>
-			<div id="bottomScreen">
-				<p>0%</p>
+			<div id="rightScreen">
+				<div>
+					<a class="logo">
+						<img src="./src/img/spring/rightlogo.png" width="50">
+					</a>
+				</div>
 			</div>
 			<canvas id="mainCanvas" width="375" height="667"></canvas>
 			
@@ -78,7 +85,7 @@
 		</div>
 		<div id="tip2">
 		</div>
-		<video id="video" preload="auto" webkit-playsinline="true" playsinline="true" x5-video-player-type="h5" x-webkit-airplay="true" x5-video-player-fullscreen="true" x5-video-orientation="portraint"></video>
+		<video id="video" webkit-playsinline="true" playsinline="true" x5-video-player-type="h5" x-webkit-airplay="true" x5-video-player-fullscreen="true" x5-video-orientation="portraint"></video>
 	</div>
 	
 	<div class="scene" id="scene3">

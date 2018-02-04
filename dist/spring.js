@@ -95,40 +95,48 @@ function preloading(isShowPre){
 			.wait(2000)
 			.set({opacity: "1"}, t1.style)
 			.wait(2000)
-			.set({opacity: "0"}, t1.style)
-			
-		var t2 = document.getElementById("t2");
-		createjs.Tween.get(t2, {loop: false})
-			.wait(6000)
-			.set({opacity: "1"}, t2.style)
-			.wait(2000)
-			.set({opacity: "0"}, t2.style)
-			
-		var t3 = document.getElementById("t3");
-		createjs.Tween.get(t3, {loop: false})
-			.wait(10000)
-			.set({opacity: "1"}, t3.style)
-			.wait(2000)
-			.set({opacity: "0"}, t3.style)
-			
-		var t4 = document.getElementById("t4");
-		createjs.Tween.get(t4, {loop: false})
-			.wait(14000)
-			.set({opacity: "1"}, t4.style)
-			.wait(2000)
-			.set({opacity: "0"}, t4.style)
-		
-		var mainView = document.getElementById("mainView");
-		createjs.Tween.get(mainView, {loop: false})
-			.wait(18000)
-			.set({opacity: "1"}, mainView.style);
+			.set({opacity: "0"}, t1.style).call(function(){
+				
+				var t2 = document.getElementById("t2");
+				createjs.Tween.get(t2, {loop: false})
+					.wait(2000)
+					.set({opacity: "1"}, t2.style)
+					.wait(2000)
+					.set({opacity: "0"}, t2.style).call(function(){
+						
+						var t3 = document.getElementById("t3");
+						createjs.Tween.get(t3, {loop: false})
+							.wait(2000)
+							.set({opacity: "1"}, t3.style)
+							.wait(2000)
+							.set({opacity: "0"}, t3.style).call(function(){
+								
+								var t4 = document.getElementById("t4");
+								createjs.Tween.get(t4, {loop: false})
+									.wait(2000)
+									.set({opacity: "1"}, t4.style)
+									.wait(2000)
+									.set({opacity: "0"}, t4.style).call(function(){
+										
+										var mainView = document.getElementById("mainView");
+										createjs.Tween.get(mainView, {loop: false})
+											.wait(2000)
+											.set({opacity: "1"}, mainView.style).call(function(){
+												$("#mainView").css("z-index", "5");
+											})
+									})
+							})
+					})
+			})
 		
 	}else{
 		
 		var mainView = document.getElementById("mainView");
 		createjs.Tween.get(mainView, {loop: false})
 			.wait(1000)
-			.set({opacity: "1"}, mainView.style);
+			.set({opacity: "1"}, mainView.style).call(function(){
+				$("#mainView").css("z-index", "5");
+			})
 		
 	}
 	createjs.Ticker.setFPS(10);
@@ -179,7 +187,6 @@ function loadResource(){
 	loader.loadManifest(manifest);
 }
 function handleFileComplete(evt){
-	
 }
 //加载完成事件
 function handleAllComplete(){
@@ -204,17 +211,28 @@ function handleAllComplete(){
 		}, 2000)
 	}*/
 	
-	$("#preloadWrap").on("click", function(){
+	$("#leftScreen, #rightScreen").on("touchend", function(){
+		$("#progress").hide();
 		$("#mainView").addClass("show");
+		var v = document.getElementById("video");
+		v.src = loader.getItem("video").src;
+		v.play();
+		setTimeout(function(){
+			v.pause();
+		}, 1)
+		
 	})
 	
 	//初始化界面
 	initMainView();
 	
+	
 }
 
 function handleProgress(evt){
-	$("#bottomScreen p").text(Math.floor(evt.loaded*100) + "%");
+	var num = Math.floor(evt.loaded*100);
+	$("#progress").text(num + "%");
+	
 }
 
 //初始化界面
@@ -353,9 +371,9 @@ function tick(){
 
 //回家
 $("#goBtn .go1").on("touchstart", function(){
-	playVideo();
-	$("#preloadWrap").addClass("hide");
 	
+	$("#preloadWrap").addClass("hide");
+	playVideo();
 	var tip = document.getElementById("tip2");
 	createjs.Tween.get(tip, {loop: false})
 		.wait(1000)
@@ -390,7 +408,6 @@ $("#goBtn .go3").on("touchstart", function(){
 var video;
 var videoCurrentTime;
 
-document.getElementById("video").src = loader.getItem("video").src;
 function playVideo(){
 	video = document.getElementById("video");
 	video.play();
@@ -582,6 +599,7 @@ $("#makeBtn").on("touchstart", function(){
 		},
 		error: function(){
 			utils.toast(false);
+			utils.warning("网络连接超时");
 		}
 	});
 });
@@ -620,6 +638,7 @@ $("#getImgBtn").on("click", function(){
 		},
 		error: function(){
 			utils.toast(false);
+			utils.warning("网络连接超时");
 		}
 	});
 	

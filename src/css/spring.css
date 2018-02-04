@@ -98,39 +98,73 @@
 	-webkit-transition: all 2s ease;
 	transition: all 2s ease;
     font-size: 0.42rem;
+    z-index: 2;
 }
 #preloadWrap .flex {
 	justify-content: center;
     align-items: center;
 }
-#topScreen, #bottomScreen {
+#leftScreen, #rightScreen {
 	position: absolute;
-	height: 50%;
-	background: #1C1C20;
-	width: 100%;
-	transition: all 0.5s ease;
+	height: 100%;
 	top: 0;
-	font-size: 0.42rem;
-	z-index: 2;
-}
-#topScreen .logo {
-    position: absolute;
-    bottom: 5px;
-    left: 50%;
-    transform: translate(-50%, 0);
-}
-#bottomScreen {
-	top: auto;
 	bottom: 0;
+	width: 50%;
+	-webkit-transition: all 1s ease;
+	transition: all 1s ease;
+	background: #1C1C20;
+	z-index: 1;
 }
-#mainView.show #topScreen {
-	-webkit-transform: translate(0, -100%);
-	transform: translate(0, -100%);
+#leftScreen {
+	left: 0;
+	-webkit-transform-origin: 0% 40%;
+	transform-origin: 0% 40%;
+	-webkit-transform: perspective(0) rotateY(0);
+	transform: perspective(0) rotateY(0);
 }
-#mainView.show #bottomScreen {
-	-webkit-transform: translate(0, 100%);
-	transform: translate(0, 100%);
-}  
+#rightScreen {
+	right: 0;
+	-webkit-transform-origin: 100% 40%;
+	transform-origin: 100% 40%;
+	-webkit-transform: perspective(0) rotateY(0);
+	transform: perspective(0) rotateY(0);
+}
+#mainView.show #leftScreen {
+	-webkit-transform: perspective(600px) rotateY(90deg);
+	transform: perspective(600px) rotateY(90deg);
+}
+ #mainView.show #rightScreen {
+	-webkit-transform: perspective(600px) rotateY(-90deg);
+	transform: perspective(600px) rotateY(-90deg);
+}
+#leftScreen>div, #rightScreen>div {
+	position: absolute;
+	top: 50%;
+	-webkit-transform: translate(0, -50%);
+	transform: translate(0, -50%);
+	margin-top: -30px;
+}
+#leftScreen>div {
+	right: 0;
+	text-align: right;
+}
+#rightScreen>div {
+	left: 0;
+	text-align: left;
+}
+#progress {
+	position: absolute;
+	text-align: center;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	font-size: 0.42rem;
+	height: 30px;
+	margin-top: 50px;
+	z-index: 2;
+	color: #fff;
+}
 /*
 	场景
 */
@@ -193,7 +227,6 @@
 	font-size: 18px;
 	border: 6px solid #5896E5;
 	position: relative;
-	z-index: 1;
 	margin: 0 auto;
 }
 .circles {
@@ -265,7 +298,7 @@
 	场景2
 */
 #scene2 {
-	background: #fcf0da;
+	background: #1c1c20;
 }
 #scene2 video {
 	position: absolute;
@@ -350,7 +383,7 @@
     text-align: center;
     line-height: 0.7rem;
     letter-spacing: 2px;
-    margin-top: -0.8rem;
+    margin-top: -0.6rem;
 }
 #scene3 #words i {
 	font-style: normal;
@@ -380,13 +413,13 @@
 	color: #fff;
 	font-size: 0.32rem;	
 	border-radius: 0.24rem;
-	margin: 0.6rem auto;
+	margin: 0.5rem auto;
 	padding: 0 0.36rem;
 }
 #scene3 .btnGroupWrap {
 	font-size: 0.32rem;	
 	text-align: center;
-	margin: 0.6rem auto;
+	margin: 0.5rem auto;
 	display: none;
 }
 #scene3 .btnGroupWrap .btn {
@@ -472,6 +505,7 @@
 	padding: 0 0.2rem;
 	border: none;
 	border-radius: 3px;
+	margin-top: 3px;
 }
 #inputDialog .btnWrap {
 	text-align: center;
