@@ -90,9 +90,9 @@ if(isPC()){
 	
 }
 
-if(utils.isWx()){
+/*if(utils.isWx()){
 	$("#scene3 .content").append('<img src="./src/img/spring/share.png" class="share" id="shareTip">');
-}
+}*/
 
 //加载资源
 var loader;
@@ -126,38 +126,44 @@ function handleAllComplete(){
 	//createjs.Sound.play("bgm");
 	
 	//隐藏加载
-	/*if(isShowPre){
+	if(isShowPre){
 		var endTime = new Date().getTime();
 		if(endTime - startTime < 20000){
 			setTimeout(function(){
-				$("#mainView").addClass("show");
+				showMainView();
 			}, (20000 - endTime + startTime))
 		}else{
-			$("#mainView").addClass("show");
+			showMainView();
 		}
 		
 	}else{
 		setTimeout(function(){
-			$("#mainView").addClass("show");
+			showMainView();
 		}, 2000)
-	}*/
+	}
 	
-	$("#leftScreen, #rightScreen").on("touchend", function(){
-		$("#progress").hide();
-		$("#mainView").addClass("show");
-		var v = document.getElementById("video");
-		v.src = loader.getItem("video").src;
-		v.play();
-		setTimeout(function(){
-			v.pause();
-		}, 1)
+	/*$("#leftScreen, #rightScreen").on("touchend", function(){
 		
-	})
+		showMainView();
+		
+	})*/
 	
 	//初始化界面
 	initMainView();
 	
 	
+}
+
+var showMainView = function(){
+	$("#progress").hide();
+	$("#mainView").addClass("show");
+	var v = document.getElementById("video");
+	v.poster = loader.getItem("scene1").src;
+	v.src = loader.getItem("video").src;
+	v.play();
+	setTimeout(function(){
+		v.pause();
+	}, 1)
 }
 
 function handleProgress(evt){
@@ -449,7 +455,7 @@ function initScene3(){
 	$("#words ul").html(html);
 	
 	if(utils.isWx()){
-		var shareTip = document.getElementById("shareTip");
+		/*var shareTip = document.getElementById("shareTip");
 		createjs.Tween.get(shareTip, {loop: false})
 		.wait(1000)
 		.set({opacity: "1"}, shareTip.style)
@@ -462,7 +468,7 @@ function initScene3(){
 		.wait(1000)
 		.set({opacity: "1"}, shareTip.style)
 		.wait(1000)
-		.set({opacity: "0"}, shareTip.style)
+		.set({opacity: "0"}, shareTip.style)*/
 	}
 }
 var createWords = function(words){
@@ -496,14 +502,13 @@ $("#makeBtn").on("touchstart", function(){
 		text = "新年大吉大利";
 	}
 	if(text.length > 8){
-		utils.warning("不能超过8个字哦");
+		utils.warning("只支持4-8个汉字作诗");
 		return;
-	}else if(!/^[\u4e00-\u9fa5]{1,8}$/i.test(text)){
-		utils.warning("只支持汉字作诗");
+	}else if(!/^[\u4e00-\u9fa5]{4,8}$/i.test(text)){
+		utils.warning("只支持4-8个汉字作诗");
 		return;
 	}
 	$("#remakeBtn").data("text", text);
-	var url = "http://192.168.32.78:9001/poem?start_words=" + text;
 	$("#inputDialog").removeClass("show");
 	
 	$(".showInputBtn").hide();
@@ -511,9 +516,12 @@ $("#makeBtn").on("touchstart", function(){
 	
 	utils.toast(true);
 	$.ajax({
-		url: url,
-		type: "get",
-		dataType: "jsonp",
+		url: "./../h5/poem",
+		type: "post",
+		data: {
+			start_words: text
+		},
+		dataTyoe: "json",
 		success: function(data){
 			
 			utils.toast(false);
@@ -523,14 +531,16 @@ $("#makeBtn").on("touchstart", function(){
 					var html = createWords(data.poem);
 					$("#words ul").html(html);
 				}
+			}else if(data.code == 1004){
+				utils.warning("只支持4-8个汉字作诗");
 			}else{
-				utils.warning(data.msg);
+				utils.warning("抱歉，小八哥走神了，请重新作诗");
 			}
 			
 		},
 		error: function(){
 			utils.toast(false);
-			utils.warning("网络连接超时");
+			utils.warning("抱歉，小八哥走神了，请重新作诗");
 		}
 	});
 });
@@ -548,15 +558,14 @@ $("#reinputBtn").on("touchstart", function(){
 
 //生成图片
 $("#getImgBtn").on("click", function(){
-	var arr = [];
-	for(var k in window.poem){
-		arr.push("poem[]=" + window.poem[k]);
-	}
 	utils.toast(true);
 	$.ajax({
-		url: "http://192.168.32.78:9001/sharegen?" + arr.join("&"),
-		type: "get",
-		dataType: "jsonp",
+		url: "./../h5/sharegen",
+		type: "post",
+		data: {
+			words: JSON.stringify(window.poem)
+		},
+		dataTyoe: "json",
 		success: function(data){
 			utils.toast(false);
 			if(data.code == 0){
@@ -569,7 +578,7 @@ $("#getImgBtn").on("click", function(){
 		},
 		error: function(){
 			utils.toast(false);
-			utils.warning("网络连接超时");
+			utils.warning("抱歉，小八哥走神了");
 		}
 	});
 	
