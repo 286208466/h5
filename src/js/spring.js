@@ -13,7 +13,7 @@ $('html').css({
 var startTime;
 //是否显示预加载
 var isShowPre = Math.random()*2 > 1;
-//isShowPre = false;
+isShowPre = false;
 function preloading(isShowPre){
 	
 	createjs.CSSPlugin.install(createjs.Tween);
@@ -262,7 +262,7 @@ $("#ticketBtn .circleBtn").on("touchstart", function(){
 			"frames": {"regX": 0, "height": 389.5, "count": 12, "regY": 0, "width": 606},
 			"animations": {
 				"run": [0, 11],
-				"startRun": [0]
+				"endRun": [11]
 			},
 			"complete": true
 		});
@@ -286,7 +286,7 @@ $("#ticketBtn .circleBtn").on("touchstart", function(){
 	
 	if(isSuccess){
 		setTimeout(function(){
-			scene1grant.stop();
+			scene1grant.gotoAndPlay("endRun");
 			mainstage.update();
 			$("#goBtn a[data-target='success']").removeClass("hide");
 			$("#goBtn a[data-target='failure']").addClass("hide");
@@ -311,20 +311,23 @@ $("#goBtn .go1").on("touchstart", function(){
 	
 	$("#preloadWrap").addClass("hide");
 	playVideo();
-	var tip = document.getElementById("tip2");
-	createjs.Tween.get(tip, {loop: false})
-		.wait(1000)
-		.set({opacity: "1"}, tip.style)
-		.wait(1000)
-		.set({opacity: "0"}, tip.style)
-		.wait(1000)
-		.set({opacity: "1"}, tip.style)
-		.wait(1000)
-		.set({opacity: "0"}, tip.style)
-		.wait(1000)
-		.set({opacity: "1"}, tip.style)
-		.wait(1000)
-		.set({opacity: "0"}, tip.style)
+	if(browser.versions.iPhone){
+		var tip = document.getElementById("tip2");
+		createjs.Tween.get(tip, {loop: false})
+			.wait(1000)
+			.set({opacity: "1"}, tip.style)
+			.wait(1000)
+			.set({opacity: "0"}, tip.style)
+			.wait(1000)
+			.set({opacity: "1"}, tip.style)
+			.wait(1000)
+			.set({opacity: "0"}, tip.style)
+			.wait(1000)
+			.set({opacity: "1"}, tip.style)
+			.wait(1000)
+			.set({opacity: "0"}, tip.style)
+	}
+	
 	
 });
 
@@ -416,16 +419,28 @@ tip1.addEventListener('touchend',function(event){
     
 })
 
+//判断访问终端
+var browser = {
+    versions: function(){
+        var u = navigator.userAgent, app = navigator.appVersion;
+        return {
+            trident: u.indexOf('Trident') > -1, //IE内核
+            presto: u.indexOf('Presto') > -1, //opera内核
+            webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+            gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1,//火狐内核
+            mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+            ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+            android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+            iPhone: u.indexOf('iPhone') > -1 , //是否为iPhone或者QQHD浏览器
+            iPad: u.indexOf('iPad') > -1, //是否iPad
+            webApp: u.indexOf('Safari') == -1, //是否web应该程序，没有头部与底部
+            weixin: u.indexOf('MicroMessenger') > -1, //是否微信 （2015-01-22新增）
+            qq: u.match(/\sQQ/i) == " qq" //是否QQ
+        };
+    }(),
+    language: (navigator.browserLanguage || navigator.language).toLowerCase()
+}
 
-/*$("#scene2 #tip1").on("touchstart", function(){
-	if(!$("#tip1").is(":hidden")){
-		var v = document.getElementById("video");
-		v.currentTime = videoCurrentTime;
-		v.play();
-		$("#tip1").hide();
-	}
-})
-*/
 //声音按钮事件
 /*$("#bgAudioBtn").on("touchstart", function(){
 	var $this = $(this);
@@ -502,10 +517,10 @@ $("#makeBtn").on("touchstart", function(){
 		text = "新年大吉大利";
 	}
 	if(text.length > 8){
-		utils.warning("只支持4-8个汉字作诗");
+		utils.warning("只支持2-8个汉字作诗");
 		return;
-	}else if(!/^[\u4e00-\u9fa5]{4,8}$/i.test(text)){
-		utils.warning("只支持4-8个汉字作诗");
+	}else if(!/^[\u4e00-\u9fa5]{2,8}$/i.test(text)){
+		utils.warning("只支持2-8个汉字作诗");
 		return;
 	}
 	$("#remakeBtn").data("text", text);
@@ -532,7 +547,7 @@ $("#makeBtn").on("touchstart", function(){
 					$("#words ul").html(html);
 				}
 			}else if(data.code == 1004){
-				utils.warning("只支持4-8个汉字作诗");
+				utils.warning("只支持2-8个汉字作诗");
 			}else{
 				utils.warning("抱歉，小八哥走神了，请重新作诗");
 			}
@@ -578,7 +593,7 @@ $("#getImgBtn").on("click", function(){
 		},
 		error: function(){
 			utils.toast(false);
-			utils.warning("抱歉，小八哥走神了");
+			utils.warning("诶，网络不佳，请重新生成");
 		}
 	});
 	
@@ -621,9 +636,6 @@ var scene2stage;
 var scene2bg;
 
 app.initScene2 = function(){
-	var video = document.getElementById("scene2video");
-	//video.src = loader.getItem("video").src;
-	video.play();
 	
 	/*scene2canvas = document.getElementById("scene2canvas");
 	

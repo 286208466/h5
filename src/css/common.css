@@ -147,8 +147,8 @@ p {
 	display: inline-block;
 	background: rgba(0, 0, 0, 0.8);
 	color: #f1f1f1;
-    padding: 10px;
-    line-height: 22px;
+    padding: 0.16rem 0.2rem;
+    line-height: 0.44rem;
     border-radius: 4px;
     animation-name: ly-bounceIn;
 	-webkit-animation-name: ly-bounceIn;
@@ -156,9 +156,9 @@ p {
 	animation-fill-mode: both;
 	-webkit-animation-duration: .18s;
 	animation-duration: .18s;
-	font-size: 15px;
-	min-width: 250px;
-	max-width: 300px;
+	font-size: 0.28rem;
+    min-width: 4.6rem;
+    max-width: 6rem;
 }
 @keyframes ly-bounceIn {
 	0% {

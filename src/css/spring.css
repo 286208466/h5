@@ -309,6 +309,7 @@
     left: 0;
     display: block;
     width: 100%;
+    cursor: pointer;
 }
 #scene2 #tip1 {
 	position: absolute;
