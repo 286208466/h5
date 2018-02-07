@@ -154,16 +154,31 @@ function handleAllComplete(){
 	
 }
 
+var videoCurrentTime;
 var showMainView = function(){
 	$("#progress").hide();
 	$("#mainView").addClass("show");
-	var v = document.getElementById("video");
-	v.poster = loader.getItem("scene1").src;
-	v.src = loader.getItem("video").src;
-	v.play();
-	setTimeout(function(){
-		v.pause();
-	}, 1)
+	var video = document.getElementById("video");
+	//video.width = windowWidth;
+	//video.height = windowHeight;
+	//v.poster = loader.getItem("scene1").src;
+	video.src = loader.getItem("video").src;
+	
+	video.onended = function(){
+		$("#scene2").addClass("isHide").removeClass("cur");
+		$("#scene3").addClass("cur");
+		initScene3();
+	};
+
+	video.addEventListener("timeupdate",function(){
+		console.log(this.currentTime)
+		if(!videoCurrentTime && this.currentTime > 24.2){
+			this.pause();
+			videoCurrentTime = this.currentTime;
+			$("#tip1").show();
+		}
+	});
+	
 }
 
 function handleProgress(evt){
@@ -233,7 +248,7 @@ function initMainView(){
 var scene1SpriteSheet;
 var scene1grant;
 var scene1Failure;
-$("#ticketBtn .circleBtn").on("touchstart", function(){
+$("#ticketBtn .circleBtn").on("click", function(){
 	
 	$("#goBtn").siblings().addClass("hide");
 	
@@ -305,12 +320,14 @@ $("#ticketBtn .circleBtn").on("touchstart", function(){
 function tick(){
 	mainstage.update();
 }
-
 //回家
-$("#goBtn .go1").on("touchstart", function(){
+$("#goBtn .go1").on("click", function(){
 	
-	$("#preloadWrap").addClass("hide");
-	playVideo();
+	var video = document.getElementById("video");
+	video.play();
+	setTimeout(function(){
+		$("#preloadWrap").addClass("hide");
+	}, 500);
 	if(browser.versions.iPhone){
 		var tip = document.getElementById("tip2");
 		createjs.Tween.get(tip, {loop: false})
@@ -332,48 +349,28 @@ $("#goBtn .go1").on("touchstart", function(){
 });
 
 //继续抢
-$("#goBtn .go2").on("touchstart", function(){
+$("#goBtn .go2").on("click", function(){
 	$("#goBtn a").addClass("hide");
-	$("#ticketBtn .circleBtn").trigger("touchstart");
+	$("#ticketBtn .circleBtn").trigger("click");
 });
 
 //不抢了
-$("#goBtn .go3").on("touchstart", function(){
+$("#goBtn .go3").on("click", function(){
 	$("#preloadWrap").addClass("toleft");
 	$("#scene3").addClass("cur");
 	initScene3();
 });
 
-//播放视频
-var video;
-var videoCurrentTime;
-
-function playVideo(){
-	video = document.getElementById("video");
-	video.play();
-	
-	video.onended = function(){
-		$("#scene2").addClass("isHide").removeClass("cur");
-		$("#scene3").addClass("cur");
-		initScene3();
-	};
-
-	video.addEventListener("timeupdate",function(){
-		console.log(this.currentTime)
-		if(!videoCurrentTime && this.currentTime > 24.2){
-			this.pause();
-			videoCurrentTime = this.currentTime;
-			$("#tip1").show();
-		}
-	});
-}
-
-$("#scene2").on("touchstart", function(){
+$("#video").on("touchstart", function(e){
+	e.preventDefault();
+    e.stopPropagation();
 	var v = document.getElementById("video");
 	v.playbackRate = 2;
 })
 
-$("#scene2").on("touchend", function(){
+$("#video").on("touchend", function(e){
+	e.preventDefault();
+    e.stopPropagation();
 	var v = document.getElementById("video");
 	v.playbackRate = 1;
 })
@@ -405,7 +402,6 @@ tip1.addEventListener('touchend',function(event){
 		if(xx-XX>120){
 			if(!$("#tip1").is(":hidden")){
 				var v = document.getElementById("video");
-				v.currentTime = videoCurrentTime;
 				v.play();
 				$("#tip1").hide();
 			}
@@ -497,30 +493,34 @@ var createWords = function(words){
 			}
 			html += ',</span>'
 		}else{
-			html += '<span>&ensp;' + words[i] + '。</span>';
+			html += '<span>&ensp;';
+			for(var j = 0; j < words[i].length; j++){
+				html += '<i>' + words[i][j] + '</i>'
+			}
+			html += '。</span>';
 			html += '</li>';
 		}
 		
 	}
 	return html;
 }
-$(".showInputBtn").on("touchstart", function(){
-	$("#inputDialog input").val("");
+$(".showInputBtn").on("click", function(){
 	$("#inputDialog").addClass("show");
+	$("#inputDialog input").val("");
 });
 
 //生成
 window.poem = "";
-$("#makeBtn").on("touchstart", function(){
+$("#makeBtn").on("click", function(){
 	var text = $.trim($("#inputDialog input").val());
 	if(text == ""){
 		text = "新年大吉大利";
 	}
 	if(text.length > 8){
-		utils.warning("只支持2-8个汉字作诗");
+		utils.warning("只支持2-8个简体中文作诗");
 		return;
 	}else if(!/^[\u4e00-\u9fa5]{2,8}$/i.test(text)){
-		utils.warning("只支持2-8个汉字作诗");
+		utils.warning("只支持2-8个简体中文作诗");
 		return;
 	}
 	$("#remakeBtn").data("text", text);
@@ -538,6 +538,37 @@ $("#makeBtn").on("touchstart", function(){
 		},
 		dataTyoe: "json",
 		success: function(data){
+			if(data.code == 0){
+				utils.toast(false);
+				window.poem = data.poem;
+				if(data.poem.length > 0){
+					var html = createWords(data.poem);
+					$("#words ul").html(html);
+				}
+			}else{
+				window.poem = "";
+				$("#words ul").html("");
+				resendPoem(text);
+			}
+			
+		},
+		error: function(){
+			window.poem = "";
+			$("#words ul").html("");
+			resendPoem(text);
+		}
+	});
+});
+
+var resendPoem = function(text){
+	$.ajax({
+		url: "./../h5/poem",
+		type: "post",
+		data: {
+			start_words: text
+		},
+		dataTyoe: "json",
+		success: function(data){
 			
 			utils.toast(false);
 			if(data.code == 0){
@@ -547,7 +578,9 @@ $("#makeBtn").on("touchstart", function(){
 					$("#words ul").html(html);
 				}
 			}else if(data.code == 1004){
-				utils.warning("只支持2-8个汉字作诗");
+				utils.warning("只支持2-8个简体中文作诗");
+			}else if(data.code == 1005){
+				utils.warning("抱歉，小八哥作不来诗");
 			}else{
 				utils.warning("抱歉，小八哥走神了，请重新作诗");
 			}
@@ -558,17 +591,22 @@ $("#makeBtn").on("touchstart", function(){
 			utils.warning("抱歉，小八哥走神了，请重新作诗");
 		}
 	});
-});
+}
 
 //重新生成
-$("#remakeBtn").on("touchstart", function(){
-	$("#makeBtn").trigger("touchstart");
+$("#remakeBtn").on("click", function(){
+	if(window.poem == ""){
+		$(".showInputBtn").trigger("click");
+	}else{
+		$("#makeBtn").trigger("click");
+	}
+	
 });
 
 
 //继续做诗
-$("#reinputBtn").on("touchstart", function(){
-	$(".showInputBtn").trigger("touchstart");
+$("#reinputBtn").on("click", function(){
+	$(".showInputBtn").trigger("click");
 });
 
 //生成图片
@@ -582,12 +620,38 @@ $("#getImgBtn").on("click", function(){
 		},
 		dataTyoe: "json",
 		success: function(data){
+			if(data.code == 0){
+				utils.toast(false);
+				$("#previewWrap").addClass("show");
+				$("#previewWrap img").attr("src", data.url);
+			}else{
+				resendImg(window.poem);
+			}
+			
+		},
+		error: function(){
+			resendImg(window.poem);
+		}
+	});
+	
+});
+
+var resendImg = function(poem){
+
+	$.ajax({
+		url: "./../h5/sharegen",
+		type: "post",
+		data: {
+			words: poem
+		},
+		dataTyoe: "json",
+		success: function(data){
 			utils.toast(false);
 			if(data.code == 0){
 				$("#previewWrap").addClass("show");
 				$("#previewWrap img").attr("src", data.url);
 			}else{
-				utils.warning(data.msg);
+				utils.warning("诶，网络不佳，请重新生成");
 			}
 			
 		},
@@ -596,10 +660,9 @@ $("#getImgBtn").on("click", function(){
 			utils.warning("诶，网络不佳，请重新生成");
 		}
 	});
-	
-});
+}
 
-$("#previewWrap .closeBtn").on("touchstart", function(){
+$("#previewWrap .closeBtn").on("click", function(){
 	$("#previewWrap").removeClass("show");
 });
 

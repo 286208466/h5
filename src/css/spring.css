@@ -87,6 +87,14 @@
 #preloadWrap.toleft {
 	-webkit-transform: translate(-100%, 0);
     transform: translate(-100%, 0);
+    -webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-webkit-perspective: 1000;
+	-moz-perspective: 1000;
+	-ms-perspective: 1000;
+	perspective: 1000;
 }
 #preloadWrap .text {
 	position: absolute;
@@ -179,6 +187,14 @@
     overflow: hidden;
     -webkit-transform: translate(100%, 0);
 	transform: translate(100%, 0);
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-webkit-perspective: 1000;
+	-moz-perspective: 1000;
+	-ms-perspective: 1000;
+	perspective: 1000;
 }
 .scene.cur {
 	-webkit-transform: translate(0%, 0);
@@ -309,7 +325,21 @@
     left: 0;
     display: block;
     width: 100%;
+    height: 100%;
     cursor: pointer;
+    object-fit: fill;
+}
+#scene2, #scene2 video {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	-webkit-touch-callout: none;
+    -moz-touch-callout: none;
+    -ms-touch-callout: none;
+    touch-callout: none;
 }
 #scene2 #tip1 {
 	position: absolute;
@@ -393,7 +423,7 @@
 #scene3 #words i {
 	font-style: normal;
 }
-#scene3 #words i:first-child {
+#scene3 #words span:first-child i:first-child {
 	font-weight: bold;
     font-size: 0.38rem;
 }
@@ -461,11 +491,14 @@
 	position: relative;
 	display: inline-block;
 	cursor: pointer;
+	width: 100px;
+	text-align: center;
 }
 #scene3 #getImgBtn img {
-	position: absolute;
-    width: 1.2rem;
-    top: -0.3rem;
+    position: absolute;
+    width: 60px;
+    top: -15px;
+    right: -48px;
 }
 #scene3 .share {
 	position: absolute;
@@ -477,7 +510,7 @@
 	transition: all 0.45s ease;
 }
 #inputDialog {
-	position: fixed;
+	position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -503,6 +536,7 @@
 	width: 80%;
 	margin: 0 auto;
 	margin-bottom: 1.2rem;
+	font-size: 0.3rem;
 }
 #inputDialog .input input {
 	width: 100%;
@@ -513,6 +547,9 @@
 	border: none;
 	border-radius: 3px;
 	margin-top: 3px;
+	font-size: 0.32rem;
+	color: #333;
+	cursor: pointer;
 }
 #inputDialog .btnWrap {
 	text-align: center;

@@ -137,7 +137,7 @@ p {
 #warning {
 	position: fixed;
     z-index: 99000;
-    top: 20px;
+    top: 50px;
     left: 50%;
     -webkit-transform: translate(-50%,0);
     transform: translate(-50%,0);
